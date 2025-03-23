@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://omar-ref3y.github.io/Portfolio________/",
+  "homepage": "https://omar-ref3y.github.io/portfolio/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

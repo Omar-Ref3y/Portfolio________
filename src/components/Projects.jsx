@@ -1,377 +1,275 @@
-import { useRef, useState, useEffect } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
+import { motion } from 'framer-motion';
 
-const ProjectsSection = styled.section`
+// Import first image from each category
+import aiPreview from '../assets/AI/Ai (1).jpg';
+import ecommercePreview from '../assets/E-commerce/E-commerce (1).png';
+import fashionPreview from '../assets/Fashion/Fashion (1).png';
+import jewelryPreview from '../assets/Jewelry/Jewelry (1).png';
+import manipulationPreview from '../assets/Manipulation/Manipulation (1).png';
+import restorationPreview from '../assets/Old Restorations/Old (1).png';
+import portraitPreview from '../assets/Portrait/Portrait (1).png';
+import realEstatePreview from '../assets/Real State/Real State (1).png';
+import weddingPreview from '../assets/Wedding/Wedding (1).png';
+import removePreview from '../assets/remove/remove person (1).png';
+
+// Import rest of the code...
+
+const projects = [
+  {
+    id: 'ai',
+    title: 'AI Art',
+    description: 'Creative AI-generated artwork and designs',
+    image: aiPreview,
+    folder: 'AI',
+    tags: ['AI', 'Digital Art', 'Creative']
+  },
+  {
+    id: 'ecommerce',
+    title: 'E-commerce',
+    description: 'Product photography and retouching',
+    image: ecommercePreview,
+    folder: 'E-commerce',
+    tags: ['Product', 'Commercial', 'E-commerce']
+  },
+  {
+    id: 'fashion',
+    title: 'Fashion',
+    description: 'High-end fashion photography and retouching',
+    image: fashionPreview,
+    folder: 'Fashion',
+    tags: ['Fashion', 'Beauty', 'Editorial']
+  },
+  {
+    id: 'jewelry',
+    title: 'Jewelry',
+    description: 'Luxury jewelry photography and editing',
+    image: jewelryPreview,
+    folder: 'Jewelry',
+    tags: ['Jewelry', 'Luxury', 'Product']
+  },
+  {
+    id: 'manipulation',
+    title: 'Photo Manipulation',
+    description: 'Creative photo manipulation and compositing',
+    image: manipulationPreview,
+    folder: 'Manipulation',
+    tags: ['Manipulation', 'Creative', 'Compositing']
+  },
+  {
+    id: 'restoration',
+    title: 'Photo Restoration',
+    description: 'Old photo restoration and enhancement',
+    image: restorationPreview,
+    folder: 'Old Restorations',
+    tags: ['Restoration', 'Historical', 'Repair']
+  },
+  {
+    id: 'portrait',
+    title: 'Portrait',
+    description: 'Professional portrait retouching',
+    image: portraitPreview,
+    folder: 'Portrait',
+    tags: ['Portrait', 'Beauty', 'Professional']
+  },
+  {
+    id: 'realestate',
+    title: 'Real Estate',
+    description: 'Real estate photography enhancement',
+    image: realEstatePreview,
+    folder: 'Real State',
+    tags: ['Real Estate', 'Architecture', 'Interior']
+  },
+  {
+    id: 'wedding',
+    title: 'Wedding',
+    description: 'Wedding photography retouching',
+    image: weddingPreview,
+    folder: 'Wedding',
+    tags: ['Wedding', 'Events', 'Portrait']
+  },
+  {
+    id: 'remove',
+    title: 'Background Removal',
+    description: 'Professional background removal and replacement',
+    image: removePreview,
+    folder: 'remove',
+    tags: ['Background Removal', 'Clipping Path', 'Product']
+  }
+];
+
+const ProjectsSection = styled.div`
   padding: 6rem 2rem;
-  background: var(--bg-primary);
+  background-color: var(--bg-primary);
   min-height: 100vh;
-  display: flex;
-  align-items: center;
 `;
 
 const Container = styled.div`
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  width: 100%;
-`;
-
-const SectionTitle = styled(motion.h2)`
-  font-size: 2.5rem;
-  margin-bottom: 3rem;
-  text-align: center;
-  background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  overflow: visible;
 `;
 
 const ProjectsGrid = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
-  padding: 1rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display: none;
+  padding: 2rem 0;
+  
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(2, 1fr);
   }
-  scroll-behavior: smooth;
-  padding-bottom: 1rem;
-
-  &::after {
-    content: '';
-    padding-right: 1rem;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
   }
-`;
-
-const ProjectContent = styled.div`
-  padding: 1.5rem;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  z-index: 0;
-  height: calc(100% - 250px);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
-const ProjectImageContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: 250px;
-  overflow: hidden;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 `;
 
 const ProjectCard = styled(motion.div)`
-  flex: 0 0 400px;
-  scroll-snap-align: start;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 15px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  height: 450px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 
   &:hover {
     transform: translateY(-5px);
-    border-color: var(--primary-color);
-
-    ${ProjectImageContainer} {
-      height: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 1;
-    }
-
-    ${ProjectContent} {
-      opacity: 0;
-      transform: translateY(20px);
-    }
   }
 `;
 
-const ProjectImage = styled.img`
+const ProjectImage = styled.div`
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-`;
+  height: 250px;
+  overflow: hidden;
+  position: relative;
 
-const BeforeImage = styled(ProjectImage)`
-  opacity: ${props => props.isHovered ? 0 : 1};
-`;
-
-const AfterImage = styled(ProjectImage)`
-  opacity: ${props => props.isHovered ? 1 : 0};
-`;
-
-const ComparisonLabel = styled.div`
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  z-index: 2;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(4px);
-  
-  &:hover {
-    background: rgba(0, 0, 0, 0.9);
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
   }
+
+  &:hover img {
+    transform: scale(1.1);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+    pointer-events: none;
+  }
+`;
+
+const ProjectInfo = styled.div`
+  padding: 1.5rem;
+  text-align: left;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 `;
 
 const ProjectTitle = styled.h3`
-  font-size: 1.3rem;
+  margin: 0;
+  font-size: 1.5rem;
   color: var(--text-primary);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
 `;
 
 const ProjectDescription = styled.p`
-  font-size: 0.9rem;
   color: var(--text-secondary);
-  line-height: 1.6;
+  font-size: 0.9rem;
+  margin: 0;
   margin-bottom: 1rem;
+  flex: 1;
 `;
 
-const ProjectTags = styled.div`
+const TagsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  margin-top: auto;
 `;
 
 const Tag = styled.span`
   background: rgba(var(--primary-color-rgb), 0.1);
   color: var(--primary-color);
-  padding: 0.3rem 0.8rem;
+  padding: 0.25rem 0.75rem;
   border-radius: 15px;
   font-size: 0.8rem;
 `;
 
-const ScrollButtons = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 2rem;
-`;
-
-const ScrollButton = styled.button`
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const SectionTitle = styled.h2`
+  text-align: center;
+  font-size: 2.5rem;
   color: var(--text-primary);
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.2);
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 `;
-// تقدر تضيف اكتر من كارت من الجزء دا
-const projects = [
-  {
-    title: "Fashion, Beauty and Portraits",
-    description: "You will get High-end Photo Retouching for Products, Fashion, Beauty and Portraits.",
-    beforeImage: "src/assets/BeautyBefore.png",
-    afterImage: "src/assets/BeautyAfter.png",
-    tags: ["Photoshop", "Retouching", "Color Grading"]
-  },
-  {
-    title: "Photoshop Editing",
-    description: "You will get Photoshop Editing, Image Manipulation services",
-    beforeImage: "src/assets/Photoshop EditingBefore.png",
-    afterImage: "src/assets/Photoshop EditingAfter.png",
-    tags: ["Product", "Compositing", "Lighting"]
-  },
-  {
-    title: "Photo Retouching",
-    description: "You will get Photo Retouching and Photo Editing.",
-    beforeImage: "src/assets/Photo RetouchingBefore.png",
-    afterImage: "src/assets/Photo RetouchingAfter.png",
-    tags: ["Retouching", "Editing", "Color Grading"]
-  },
-  {
-    title: "Creative Compositing",
-    description: "Artistic photo manipulation combining multiple elements into surreal compositions.",
-    beforeImage: "src/assets/composite-before.jpg",
-    afterImage: "src/assets/composite-after.jpg",
-    tags: ["Manipulation", "Creative", "Compositing"]
-  }
-];
-//////////////////////////////////////////////////////////////////////////
+
+const SectionDescription = styled.p`
+  text-align: center;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto 3rem;
+`;
+
 const Projects = () => {
-  const ref = useRef(null);
-  const gridRef = useRef(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [hoveredProject, setHoveredProject] = useState(null);
-  const isInView = useInView(ref, { once: true, margin: "-20%" });
+  const navigate = useNavigate();
 
-  const scrollLeft = () => {
-    if (gridRef.current) {
-      const newIndex = currentIndex === 0 ? projects.length - 1 : currentIndex - 1;
-      setCurrentIndex(newIndex);
-      gridRef.current.scrollTo({
-        left: newIndex * 420, // Card width + gap
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  const scrollRight = () => {
-    if (gridRef.current) {
-      const newIndex = currentIndex === projects.length - 1 ? 0 : currentIndex + 1;
-      setCurrentIndex(newIndex);
-      gridRef.current.scrollTo({
-        left: newIndex * 420, // Card width + gap
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  // Auto scroll every 5 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      scrollRight();
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [currentIndex]);
-
-  // Handle manual scroll
-  const handleScroll = () => {
-    if (gridRef.current) {
-      const scrollPosition = gridRef.current.scrollLeft;
-      const cardWidth = 420; // Card width + gap
-      const newIndex = Math.round(scrollPosition / cardWidth);
-      
-      if (newIndex !== currentIndex) {
-        setCurrentIndex(newIndex);
-      }
-
-      // If we're at the end, scroll to start
-      if (scrollPosition + gridRef.current.offsetWidth >= gridRef.current.scrollWidth) {
-        setTimeout(() => {
-          gridRef.current.scrollTo({
-            left: 0,
-            behavior: 'smooth'
-          });
-          setCurrentIndex(0);
-        }, 1000);
-      }
-    }
-  };
-
-  useEffect(() => {
-    const grid = gridRef.current;
-    if (grid) {
-      grid.addEventListener('scroll', handleScroll);
-      return () => grid.removeEventListener('scroll', handleScroll);
-    }
-  }, [currentIndex]);
-
-  const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, x: 30 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.5
-      }
-    }
+  const handleProjectClick = (projectId) => {
+    navigate(`/project/${projectId}`);
   };
 
   return (
-    <ProjectsSection id="projects" ref={ref}>
+    <ProjectsSection id="projects">
       <Container>
-        <SectionTitle
-          initial={{ opacity: 0, y: -20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
-          transition={{ duration: 0.5 }}
-        >
-          My Projects
-        </SectionTitle>
-        <ProjectsGrid
-          ref={gridRef}
-          as={motion.div}
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-        >
-          {projects.map((project, index) => (
-            <ProjectCard 
-              key={index} 
-              variants={itemVariants}
-              onMouseEnter={() => setHoveredProject(index)}
-              onMouseLeave={() => setHoveredProject(null)}
+        <SectionTitle>My Projects</SectionTitle>
+        <SectionDescription>
+          Explore my diverse portfolio of photo editing and retouching work across various categories
+        </SectionDescription>
+        <ProjectsGrid>
+          {projects.map((project) => (
+            <ProjectCard
+              key={project.id}
+              onClick={() => handleProjectClick(project.id)}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
-              <ProjectImageContainer>
-                <BeforeImage 
-                  src={project.beforeImage} 
-                  alt={`${project.title} Before`}
-                  isHovered={hoveredProject === index}
-                />
-                <AfterImage 
-                  src={project.afterImage} 
-                  alt={`${project.title} After`}
-                  isHovered={hoveredProject === index}
-                />
-                <ComparisonLabel>
-                  {hoveredProject === index ? 'After' : 'Before'}
-                </ComparisonLabel>
-              </ProjectImageContainer>
-              <ProjectContent>
+              <ProjectImage>
+                <img src={project.image} alt={project.title} loading="lazy" />
+              </ProjectImage>
+              <ProjectInfo>
                 <ProjectTitle>{project.title}</ProjectTitle>
                 <ProjectDescription>{project.description}</ProjectDescription>
-                <ProjectTags>
-                  {project.tags.map((tag, tagIndex) => (
-                    <Tag key={tagIndex}>{tag}</Tag>
+                <TagsContainer>
+                  {project.tags.map((tag, index) => (
+                    <Tag key={index}>{tag}</Tag>
                   ))}
-                </ProjectTags>
-              </ProjectContent>
+                </TagsContainer>
+              </ProjectInfo>
             </ProjectCard>
           ))}
         </ProjectsGrid>
-        <ScrollButtons>
-          <ScrollButton onClick={scrollLeft} aria-label="Scroll left">
-            ←
-          </ScrollButton>
-          <ScrollButton onClick={scrollRight} aria-label="Scroll right">
-            →
-          </ScrollButton>
-        </ScrollButtons>
       </Container>
     </ProjectsSection>
   );

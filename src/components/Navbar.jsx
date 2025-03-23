@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
+import { HashRouter, useLocation } from 'react-router-dom';
 
 const NavContainer = styled(motion.nav)`
   position: fixed;
@@ -138,44 +139,32 @@ const SocialLink = styled(motion.a)`
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
-    let locomotiveScroll;
-    
-    const initScroll = () => {
-      // Get the Locomotive Scroll instance
-      const scrollElements = document.querySelectorAll('[data-scroll-container]');
-      if (scrollElements.length > 0) {
-        locomotiveScroll = scrollElements[0].__locomotiveScroll;
-        
-        if (locomotiveScroll) {
-          // Add scroll listener to Locomotive Scroll
-          locomotiveScroll.on('scroll', (obj) => {
-            setScrolled(obj.scroll.y > 50);
-          });
-        }
-      }
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
     };
 
-    // Try to initialize immediately
-    initScroll();
-
-    // If not successful, try again after a short delay
-    const timer = setTimeout(initScroll, 500);
-
-    return () => {
-      clearTimeout(timer);
-      if (locomotiveScroll) {
-        locomotiveScroll.destroy();
-      }
-    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleNavClick = (e, target) => {
+    e.preventDefault();
+    const element = document.querySelector(target.replace('#', '#section-'));
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setMobileMenuOpen(false);
+    }
+  };
 
   const navLinks = [
     { href: "#home", text: "Home" },
     { href: "#about", text: "About Me" },
     { href: "#projects", text: "Projects" },
-    { href: "#feedback", text: "Feedback" }
+    { href: "#feedback", text: "Feedback" },
+    { href: "#contact", text: "Contact" }
   ];
 
   const socialLinks = [
@@ -184,50 +173,40 @@ const Navbar = () => {
   ];
 
   return (
-    <NavContainer
-      scrolled={scrolled}
-      initial={false}
-      style={{
-        backgroundColor: scrolled ? '#0a192f' : 'transparent',
-        boxShadow: scrolled ? '0 4px 6px rgba(0, 0, 0, 0.1)' : 'none'
-      }}
-    >
+    <NavContainer scrolled={scrolled}>
       <NavContent>
         <Logo
           href="#home"
           scrolled={scrolled}
+          onClick={(e) => handleNavClick(e, '#home')}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <span>Ali</span>
-          Portfolio
+          <span>Omar</span> Refaey
         </Logo>
 
         <NavLinks>
-          {navLinks.map((item) => (
+          {navLinks.map((link) => (
             <NavLink
-              key={item.text}
-              href={item.href}
+              key={link.href}
+              href={link.href}
               scrolled={scrolled}
-              whileHover={{ y: -2 }}
+              onClick={(e) => handleNavClick(e, link.href)}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              {item.text}
+              {link.text}
             </NavLink>
           ))}
           <SocialLinks>
             {socialLinks.map((link) => (
               <SocialLink
-                key={link.icon}
+                key={link.href}
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                style={{ 
-                  color: scrolled ? 'var(--text-primary)' : 'rgba(255, 255, 255, 0.9)',
-                  transition: 'color 0.3s ease'
-                }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
               >
                 <i className={link.icon}></i>
               </SocialLink>
@@ -237,38 +216,37 @@ const Navbar = () => {
 
         <MobileMenuButton
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          whileTap={{ scale: 0.9 }}
+          whileTap={{ scale: 0.95 }}
         >
           <i className={`fas fa-${mobileMenuOpen ? 'times' : 'bars'}`}></i>
         </MobileMenuButton>
 
         <MobileMenu
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: mobileMenuOpen ? 1 : 0, y: mobileMenuOpen ? 0 : -20 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3 }}
           isOpen={mobileMenuOpen}
+          initial={false}
+          animate={mobileMenuOpen ? { opacity: 1 } : { opacity: 0 }}
         >
-          {navLinks.map((item) => (
+          {navLinks.map((link) => (
             <NavLink
-              key={item.text}
-              href={item.href}
-              onClick={() => setMobileMenuOpen(false)}
-              whileHover={{ scale: 1.1 }}
+              key={link.href}
+              href={link.href}
+              scrolled={true}
+              onClick={(e) => handleNavClick(e, link.href)}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              {item.text}
+              {link.text}
             </NavLink>
           ))}
           <SocialLinks>
             {socialLinks.map((link) => (
               <SocialLink
-                key={link.icon}
+                key={link.href}
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
+                whileTap={{ scale: 0.9 }}
               >
                 <i className={link.icon}></i>
               </SocialLink>

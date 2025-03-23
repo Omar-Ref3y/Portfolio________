@@ -54,6 +54,7 @@ const CTAButtons = styled(motion.div)`
   gap: 1.5rem;
   justify-content: center;
   flex-wrap: wrap;
+  margin-bottom: 4rem;
 `;
 
 const Button = styled(motion.a)`
@@ -81,6 +82,57 @@ const Button = styled(motion.a)`
   }
 `;
 
+const ScrollIndicator = styled(motion.div)`
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  z-index: 2;
+`;
+
+const ScrollText = styled.span`
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  opacity: 0.8;
+`;
+
+const ScrollIcon = styled(motion.div)`
+  width: 30px;
+  height: 50px;
+  border: 2px solid var(--text-secondary);
+  border-radius: 15px;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    background: var(--text-secondary);
+    border-radius: 50%;
+    transform: translateX(-50%);
+    animation: scrollAnimation 2s infinite;
+  }
+
+  @keyframes scrollAnimation {
+    0% {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, 20px);
+    }
+  }
+`;
+
 const Canvas = styled.canvas`
   position: absolute;
   top: 0;
@@ -93,6 +145,13 @@ const Canvas = styled.canvas`
 const Hero = () => {
   const canvasRef = useRef(null);
   const animationFrameId = useRef(null);
+
+  const handleScrollClick = () => {
+    const aboutSection = document.querySelector('#section-about');
+    if (aboutSection) {
+      aboutSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -201,6 +260,13 @@ const Hero = () => {
             className="primary"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={(e) => {
+              e.preventDefault();
+              const projectsSection = document.querySelector('#section-projects');
+              if (projectsSection) {
+                projectsSection.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
           >
             View My Work
           </Button>
@@ -209,11 +275,28 @@ const Hero = () => {
             className="secondary"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={(e) => {
+              e.preventDefault();
+              const contactSection = document.querySelector('#section-contact');
+              if (contactSection) {
+                contactSection.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
           >
             Get in Touch
           </Button>
         </CTAButtons>
       </HeroContent>
+      <ScrollIndicator
+        onClick={handleScrollClick}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.6 }}
+        whileHover={{ y: 5 }}
+      >
+        <ScrollText>Scroll Down</ScrollText>
+        <ScrollIcon />
+      </ScrollIndicator>
     </HeroSection>
   );
 };

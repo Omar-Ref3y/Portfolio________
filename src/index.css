@@ -5,6 +5,7 @@
   --bg-secondary: #1a1d23;
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
+  --primary-color-rgb: 79, 70, 229;
 }
 
 * {
@@ -13,8 +14,12 @@
   box-sizing: border-box;
 }
 
-html, body {
-  height: 100%;
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -22,7 +27,8 @@ html, body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 #root {
@@ -33,41 +39,30 @@ html, body {
   background-color: var(--bg-primary);
 }
 
-/* Locomotive Scroll styles */
-[data-scroll-container] {
-  min-height: 100vh;
-  width: 100%;
-}
-
-[data-scroll-section] {
-  perspective: 1000px;
-  transform-style: preserve-3d;
-}
-
-.c-scrollbar {
-  z-index: 1000;
-}
-
-.c-scrollbar_thumb {
-  background-color: var(--primary-color);
-}
-
-/* Scrollbar styling */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 12px;
 }
 
 ::-webkit-scrollbar-track {
   background: var(--bg-secondary);
+  border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--primary-color);
-  border-radius: 5px;
+  background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+  border-radius: 6px;
+  border: 3px solid var(--bg-secondary);
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent-color);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) var(--bg-secondary);
 }
 
 /* Selection styling */
@@ -89,6 +84,7 @@ html, body {
 
 .text-gradient {
   background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -148,5 +144,15 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+  
+  .section {
+    padding: 4rem 0;
   }
 }

@@ -1,10 +1,7 @@
-import { useRef, useState, useEffect } from 'react';
-import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import styled from '@emotion/styled';
-import emailjs from '@emailjs/browser';
-
-// Initialize EmailJS
-emailjs.init("YOUR_PUBLIC_KEY");
+import { FaEnvelope, FaGithub, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
 
 const ContactSection = styled.section`
   padding: 6rem 2rem;
@@ -34,9 +31,8 @@ const SectionTitle = styled(motion.h2)`
   font-size: 2.5rem;
   text-align: center;
   margin-bottom: 1rem;
-  background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--text-primary);
+  font-weight: 600;
 `;
 
 const SectionSubtitle = styled(motion.p)`
@@ -46,133 +42,86 @@ const SectionSubtitle = styled(motion.p)`
   margin-bottom: 3rem;
 `;
 
-const ContactForm = styled(motion.form)`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  max-width: 600px;
+const ContactLinksContainer = styled(motion.div)`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 800px;
   margin: 0 auto;
 `;
 
-const FormGroup = styled(motion.div)`
+const ContactLink = styled(motion.a)`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  svg {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+  }
+`;
+
+const LinkText = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.25rem;
 `;
 
-const Label = styled.label`
-  color: var(--text-primary);
-  font-size: 1rem;
+const LinkTitle = styled.h3`
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
 `;
 
-const Input = styled.input`
-  padding: 0.8rem;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-primary);
-  font-size: 1rem;
-  transition: all 0.3s ease;
-
-  &:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
-  }
-`;
-
-const TextArea = styled.textarea`
-  padding: 0.8rem;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-primary);
-  font-size: 1rem;
-  min-height: 150px;
-  resize: vertical;
-  transition: all 0.3s ease;
-
-  &:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
-  }
-`;
-
-const SubmitButton = styled(motion.button)`
-  padding: 1rem 2rem;
-  border-radius: 8px;
-  border: none;
-  background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-  color: white;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-
-  &:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-`;
-
-const StatusMessage = styled(motion.div)`
-  text-align: center;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-top: 1rem;
-  background: ${props => props.type === 'success' ? 'rgba(0, 255, 0, 0.1)' : 'rgba(255, 0, 0, 0.1)'};
-  color: ${props => props.type === 'success' ? '#00ff00' : '#ff0000'};
+const LinkDescription = styled.p`
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0;
 `;
 
 const Contact = () => {
-  const formRef = useRef(null);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [formStatus, setFormStatus] = useState('idle');
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setFormStatus('submitting');
-
-    try {
-      const templateParams = {
-        to_email: 'omarrefay2004@gmail.com',
-        from_name: formData.name,
-        from_email: formData.email,
-        message: formData.message
-      };
-
-      await emailjs.send(
-        'service_portfolio',
-        'template_contact',
-        templateParams
-      );
-
-      setFormStatus('success');
-      setFormData({ name: '', email: '', message: '' });
-    } catch (error) {
-      console.error('Error sending email:', error);
-      setFormStatus('error');
+  const contactLinks = [
+    {
+      icon: <FaEnvelope />,
+      title: "Email",
+      description: "Drop me a message",
+      href: "mailto:omarrefay2004@gmail.com"
+    },
+    {
+      icon: <FaWhatsapp />,
+      title: "WhatsApp",
+      description: "Let's chat",
+      href: "https://wa.me/+201001234567" // Replace with your WhatsApp number
+    },
+    {
+      icon: <FaGithub />,
+      title: "GitHub",
+      description: "Check out my code",
+      href: "https://github.com/Omar-Ref3y"
+    },
+    {
+      icon: <FaLinkedin />,
+      title: "LinkedIn",
+      description: "Connect with me",
+      href: "https://www.linkedin.com/in/omar-refaey" // Replace with your LinkedIn profile
     }
-  };
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
+  ];
 
   return (
     <ContactSection id="contact" ref={ref}>
@@ -189,88 +138,49 @@ const Contact = () => {
         }}
       >
         <SectionTitle>Get in Touch</SectionTitle>
-        <SectionSubtitle>Have a project in mind? Let's work together!</SectionSubtitle>
+        <SectionSubtitle>Let's connect and discuss your next project!</SectionSubtitle>
         
-        <ContactForm
-          ref={formRef}
-          onSubmit={handleSubmit}
+        <ContactLinksContainer
           initial="hidden"
           animate="visible"
           variants={{
             hidden: { opacity: 0 },
             visible: {
               opacity: 1,
-              transition: { staggerChildren: 0.1 }
+              transition: {
+                staggerChildren: 0.1
+              }
             }
           }}
         >
-          <FormGroup variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
-            <Label htmlFor="name">Name</Label>
-            <Input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-          </FormGroup>
-
-          <FormGroup variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
-            <Label htmlFor="email">Email</Label>
-            <Input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </FormGroup>
-
-          <FormGroup variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
-            <Label htmlFor="message">Message</Label>
-            <TextArea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              required
-            />
-          </FormGroup>
-
-          <SubmitButton
-            type="submit"
-            disabled={formStatus === 'submitting'}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            {formStatus === 'submitting' ? 'Sending...' : 'Send Message'}
-          </SubmitButton>
-
-          <AnimatePresence>
-            {formStatus === 'success' && (
-              <StatusMessage
-                type="success"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-              >
-                Message sent successfully!
-              </StatusMessage>
-            )}
-            {formStatus === 'error' && (
-              <StatusMessage
-                type="error"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-              >
-                Failed to send message. Please try again.
-              </StatusMessage>
-            )}
-          </AnimatePresence>
-        </ContactForm>
+          {contactLinks.map((link, index) => (
+            <ContactLink
+              key={index}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: {
+                    duration: 0.5,
+                    ease: "easeOut"
+                  }
+                }
+              }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              {link.icon}
+              <LinkText>
+                <LinkTitle>{link.title}</LinkTitle>
+                <LinkDescription>{link.description}</LinkDescription>
+              </LinkText>
+            </ContactLink>
+          ))}
+        </ContactLinksContainer>
       </Container>
     </ContactSection>
   );

@@ -182,7 +182,7 @@ const Navbar = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <span>Omar</span> Refaey
+          <span>Ali's</span> Portfolio
         </Logo>
 
         <NavLinks>

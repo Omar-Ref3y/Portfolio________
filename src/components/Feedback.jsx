@@ -160,11 +160,11 @@ const Star = styled.span`
 const feedbacks = [
   {
     id: 1,
-    text: "Ali's photo editing skills are exceptional! He transformed my product photos into stunning visuals that significantly boosted our online sales. His attention to detail and understanding of lighting is remarkable.",
+    text: "I have trusted Ali with several lightroom and photoshop projects. He has been able to help me with many photos in return completing several projects and helping me finalize creative photo enhancements. He has been prompt and very good with detail on all fronts. He is a great person to work with and does his very best and takes great care to the details. I am appreciative to have found him and to work with him. Thank you.",
     rating: 5,
     client: {
       name: "Sarah Johnson",
-      role: "E-commerce Owner",
+      role: "Retouching 8 photos in Light Room Classic",
       image: "https://randomuser.me/api/portraits/women/1.jpg"
     }
   },

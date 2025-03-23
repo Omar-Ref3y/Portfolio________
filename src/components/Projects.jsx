@@ -11,7 +11,7 @@ import jewelryPreview from '../assets/Jewelry/Jewelry (1).png';
 import manipulationPreview from '../assets/Manipulation/Manipulation (1).png';
 import restorationPreview from '../assets/Old Restorations/Old (1).png';
 import portraitPreview from '../assets/Portrait/Portrait (1).png';
-import realEstatePreview from '../assets/Real State/Real State (1).png';
+import realEstatePreview from '../assets/Real State/Real state (1).png';
 import weddingPreview from '../assets/Wedding/Wedding (1).png';
 import removePreview from '../assets/remove/remove person (1).png';
 
@@ -77,7 +77,7 @@ const projects = [
   {
     id: 'realestate',
     title: 'Real Estate',
-    description: 'Real estate photography enhancement',
+    description: 'Real estate photography enhancement for property listings and architectural showcases.',
     image: realEstatePreview,
     folder: 'Real State',
     tags: ['Real Estate', 'Architecture', 'Interior']

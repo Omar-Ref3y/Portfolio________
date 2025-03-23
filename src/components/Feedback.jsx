@@ -1,11 +1,11 @@
 import { useRef, useState, useEffect } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import styled from '@emotion/styled';
-import aliProfile from '../assets/ali.jpg';
 
 const FeedbackSection = styled.section`
   padding: 6rem 2rem;
   background-color: var(--bg-primary);
+  overflow: hidden;
 `;
 
 const Container = styled.div`
@@ -17,130 +17,47 @@ const SectionTitle = styled(motion.h2)`
   text-align: center;
   font-size: 2.5rem;
   color: var(--text-primary);
-  margin-bottom: 1rem;
+  margin-bottom: 3rem;
   background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
 `;
 
-const SectionDescription = styled.p`
-  text-align: center;
-  color: var(--text-secondary);
-  max-width: 600px;
-  margin: 0 auto 3rem;
-`;
-
-const FeedbackGrid = styled.div`
-  display: flex;
-  gap: 2rem;
-  padding: 1rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
-  &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-  }
-  scroll-behavior: smooth;
-  padding-bottom: 1rem; /* Space for scroll area */
-  
-  /* Add some space at the end for better UX */
-  &::after {
-    content: '';
-    padding-right: 1rem;
-  }
+const FeedbackContainer = styled.div`
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  height: 300px;
+  margin-bottom: 2rem;
 `;
 
 const FeedbackCard = styled(motion.div)`
-  flex: 0 0 350px; /* Fixed width cards */
-  scroll-snap-align: start;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 15px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
   padding: 2rem;
-  position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  height: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      45deg,
-      transparent,
-      rgba(var(--primary-color-rgb), 0.1),
-      transparent
-    );
-    transform: translateX(-100%);
-    transition: transform 0.6s;
-  }
-
-  &:hover::before {
-    transform: translateX(100%);
-  }
+  gap: 1.5rem;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
 `;
 
-const ScrollButtons = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 2rem;
-`;
-
-const ScrollButton = styled.button`
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-primary);
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.2);
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
+const FeedbackText = styled.p`
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.6;
+  flex: 1;
 `;
 
 const ClientInfo = styled.div`
   display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-top: auto;
-`;
-
-const ClientImage = styled.div`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 1.5rem;
-  font-weight: bold;
-`;
-
-const ClientDetails = styled.div`
-  display: flex;
   flex-direction: column;
+  gap: 0.5rem;
 `;
 
 const ClientName = styled.h4`
@@ -149,248 +66,235 @@ const ClientName = styled.h4`
   margin: 0;
 `;
 
-const ClientRole = styled.p`
-  color: var(--text-secondary);
+const ProjectName = styled.p`
+  color: var(--accent-color);
   font-size: 0.9rem;
   margin: 0;
-`;
-
-const FeedbackText = styled.p`
-  color: var(--text-primary);
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-`;
-
-const StarRating = styled.div`
-  display: flex;
-  gap: 0.25rem;
-  margin-bottom: 1rem;
-`;
-
-const Star = styled.span`
-  color: ${props => props.filled ? '#FFD700' : 'rgba(255, 255, 255, 0.2)'};
-  font-size: 1.2rem;
+  font-weight: 500;
 `;
 
 const Rating = styled.div`
   display: flex;
   gap: 0.25rem;
-  color: var(--primary-color);
+  color: #FFD700;
   font-size: 1.25rem;
+`;
+
+const NavigationButtons = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+`;
+
+const NavButton = styled.button`
+  background: transparent;
+  border: 2px solid var(--accent-color);
+  color: var(--accent-color);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: var(--accent-color);
+    color: var(--bg-primary);
+  }
+`;
+
+const Dots = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+`;
+
+const Dot = styled.button`
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: ${props => props.active ? 'var(--accent-color)' : 'var(--text-secondary)'};
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: ${props => props.active ? 1 : 0.5};
+
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 const feedbacks = [
   {
     id: 1,
-    text: "I have trusted Ali with several lightroom and photoshop projects. He has been able to help me with many photos in return completing several projects and helping me finalize creative photo enhancements. He has been prompt and very good with detail on all fronts. He is a great person to work with and does his very best and takes great care to the details. I am appreciative to have found him and to work with him. Thank you.",
-    rating: 5,
+    text: "Omar's work is exceptional! He transformed our product photos with his expert retouching skills, making them stand out in our e-commerce store. His attention to detail and quick turnaround time exceeded our expectations.",
     client: {
       name: "Sarah Johnson",
-      role: "Retouching 8 photos in Light Room Classic",
-      image: aliProfile
-    }
+      project: "Product Photo Enhancement"
+    },
+    rating: 5
   },
   {
     id: 2,
-    text: "Ali is a star. Very professional, very skilled, very attentive, very responsive. Highly recommended",
-    rating: 5,
+    text: "Working with Omar was a pleasure. His photo manipulation skills are incredible, and he brought my creative vision to life perfectly. I highly recommend his services for any photo editing needs.",
     client: {
       name: "Michael Chen",
-      role: "Wedding Photographer",
-      image: aliProfile
-    }
+      project: "Wedding Album Retouching"
+    },
+    rating: 5
   },
   {
     id: 3,
-    text: "Ali's creative compositing work is mind-blowing. He took our concept art and turned it into realistic photo manipulations that perfectly captured our vision.",
-    rating: 5,
+    text: "Omar restored our old family photos beautifully. His work helped us preserve precious memories that were fading away. The quality of his restoration work is remarkable.",
     client: {
       name: "Emma Davis",
-      role: "Art Director",
-      image: aliProfile
-    }
+      project: "Photo Restoration"
+    },
+    rating: 5
   },
   {
     id: 4,
-    text: "Incredible talent in photo restoration! Ali brought my family's old, damaged photos back to life with amazing detail and care. The results were emotional and perfect.",
-    rating: 5,
+    text: "Incredible attention to detail in fashion photo retouching. Omar knows exactly how to enhance images while maintaining their natural look. The results were magazine-worthy!",
     client: {
-      name: "David Wilson",
-      role: "Family Historian",
-      image: aliProfile
-    }
+      name: "Sophie Martinez",
+      project: "Fashion Photography Retouching"
+    },
+    rating: 5
   },
   {
     id: 5,
-    text: "Ali's expertise in fashion photo editing is unmatched. His color grading and skin retouching work maintained the authenticity while achieving magazine-quality results.",
-    rating: 5,
+    text: "Omar's real estate photo editing made our properties look stunning. His work significantly improved our listings' visual appeal and helped us close deals faster.",
     client: {
-      name: "Sophie Martinez",
-      role: "Fashion Photographer",
-      image: aliProfile
-    }
+      name: "James Thompson",
+      project: "Real Estate Photography"
+    },
+    rating: 5
   },
   {
     id: 6,
-    text: "Professional, fast, and incredibly skilled. Ali's work on our real estate photos made properties look stunning while keeping them realistic. A true expert!",
-    rating: 5,
+    text: "The photo manipulation work was mind-blowing! Omar created composite images that perfectly matched our creative vision. His technical skills are truly impressive.",
     client: {
-      name: "James Thompson",
-      role: "Real Estate Agent",
-      image: aliProfile
-    }
+      name: "David Wilson",
+      project: "Creative Photo Manipulation"
+    },
+    rating: 5
   }
 ];
 
-const getInitials = (name) => {
-  return name
-    .split(' ')
-    .map(word => word[0])
-    .join('')
-    .toUpperCase();
-};
-
 const Feedback = () => {
-  const ref = useRef(null);
-  const gridRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const isInView = useInView(ref, { once: true, margin: "-20%" });
+  const [direction, setDirection] = useState(0);
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { once: true });
 
-  const scrollLeft = () => {
-    if (gridRef.current) {
-      const newIndex = currentIndex === 0 ? feedbacks.length - 1 : currentIndex - 1;
-      setCurrentIndex(newIndex);
-      gridRef.current.scrollTo({
-        left: newIndex * 370, // Card width + gap
-        behavior: 'smooth'
-      });
-    }
+  const slideVariants = {
+    enter: (direction) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1
+    },
+    exit: (direction) => ({
+      zIndex: 0,
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0
+    })
   };
 
-  const scrollRight = () => {
-    if (gridRef.current) {
-      const newIndex = currentIndex === feedbacks.length - 1 ? 0 : currentIndex + 1;
-      setCurrentIndex(newIndex);
-      gridRef.current.scrollTo({
-        left: newIndex * 370, // Card width + gap
-        behavior: 'smooth'
-      });
-    }
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset, velocity) => {
+    return Math.abs(offset) * velocity;
   };
 
-  // Auto scroll every 5 seconds
+  const paginate = (newDirection) => {
+    setDirection(newDirection);
+    setCurrentIndex((prevIndex) => (prevIndex + newDirection + feedbacks.length) % feedbacks.length);
+  };
+
+  const handleDotClick = (index) => {
+    const newDirection = index > currentIndex ? 1 : -1;
+    setDirection(newDirection);
+    setCurrentIndex(index);
+  };
+
   useEffect(() => {
     const interval = setInterval(() => {
-      scrollRight();
+      paginate(1);
     }, 5000);
 
     return () => clearInterval(interval);
   }, [currentIndex]);
 
-  // Handle manual scroll
-  const handleScroll = () => {
-    if (gridRef.current) {
-      const scrollPosition = gridRef.current.scrollLeft;
-      const cardWidth = 370; // Card width + gap
-      const newIndex = Math.round(scrollPosition / cardWidth);
-      
-      if (newIndex !== currentIndex) {
-        setCurrentIndex(newIndex);
-      }
-
-      // If we're at the end, scroll to start
-      if (scrollPosition + gridRef.current.offsetWidth >= gridRef.current.scrollWidth) {
-        setTimeout(() => {
-          gridRef.current.scrollTo({
-            left: 0,
-            behavior: 'smooth'
-          });
-          setCurrentIndex(0);
-        }, 1000);
-      }
-    }
-  };
-
-  useEffect(() => {
-    const grid = gridRef.current;
-    if (grid) {
-      grid.addEventListener('scroll', handleScroll);
-      return () => grid.removeEventListener('scroll', handleScroll);
-    }
-  }, [currentIndex]);
-
-  const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, x: 30 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.5
-      }
-    }
-  };
-
   return (
-    <FeedbackSection id="feedback" ref={ref}>
+    <FeedbackSection ref={containerRef}>
       <Container>
         <SectionTitle
           initial={{ opacity: 0, y: -20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
         >
           Client Feedback
         </SectionTitle>
-        <SectionDescription>
-          Here's what my clients have to say about my work
-        </SectionDescription>
-        <FeedbackGrid
-          ref={gridRef}
-          as={motion.div}
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-        >
-          {feedbacks.map((feedback) => (
-            <FeedbackCard key={feedback.id} variants={cardVariants}>
+        <FeedbackContainer>
+          <AnimatePresence mode="wait" custom={direction}>
+            <FeedbackCard
+              key={currentIndex}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 }
+              }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={1}
+              onDragEnd={(e, { offset, velocity }) => {
+                const swipe = swipePower(offset.x, velocity.x);
+
+                if (swipe < -swipeConfidenceThreshold) {
+                  paginate(1);
+                } else if (swipe > swipeConfidenceThreshold) {
+                  paginate(-1);
+                }
+              }}
+            >
               <Rating>
-                {[...Array(feedback.rating)].map((_, i) => (
+                {[...Array(feedbacks[currentIndex].rating)].map((_, i) => (
                   <span key={i}>★</span>
                 ))}
               </Rating>
-              <FeedbackText>{feedback.text}</FeedbackText>
+              <FeedbackText>{feedbacks[currentIndex].text}</FeedbackText>
               <ClientInfo>
-                <ClientImage>
-                  {getInitials(feedback.client.name)}
-                </ClientImage>
-                <ClientDetails>
-                  <ClientName>{feedback.client.name}</ClientName>
-                  <ClientRole>{feedback.client.role}</ClientRole>
-                </ClientDetails>
+                <ClientName>{feedbacks[currentIndex].client.name}</ClientName>
+                <ProjectName>{feedbacks[currentIndex].client.project}</ProjectName>
               </ClientInfo>
             </FeedbackCard>
+          </AnimatePresence>
+        </FeedbackContainer>
+        <NavigationButtons>
+          <NavButton onClick={() => paginate(-1)}>←</NavButton>
+          <NavButton onClick={() => paginate(1)}>→</NavButton>
+        </NavigationButtons>
+        <Dots>
+          {feedbacks.map((_, index) => (
+            <Dot
+              key={index}
+              active={index === currentIndex}
+              onClick={() => handleDotClick(index)}
+            />
           ))}
-        </FeedbackGrid>
-        <ScrollButtons>
-          <ScrollButton onClick={scrollLeft} aria-label="Scroll left">
-            ←
-          </ScrollButton>
-          <ScrollButton onClick={scrollRight} aria-label="Scroll right">
-            →
-          </ScrollButton>
-        </ScrollButtons>
+        </Dots>
       </Container>
     </FeedbackSection>
   );

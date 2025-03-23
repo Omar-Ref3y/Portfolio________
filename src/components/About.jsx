@@ -249,15 +249,11 @@ const About = () => {
           <ImageContainer>
             <AboutImage
               as={motion.img}
-              src="src/assets/profile.jpg"
-              alt="Ali's profile"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+              src="/profile.jpg"
+              alt="Omar's Profile"
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              whileHover={{ 
-                scale: 1.05,
-                boxShadow: '0 0 25px rgba(var(--primary-color-rgb), 0.3)'
-              }}
             />
           </ImageContainer>
         </AboutContent>

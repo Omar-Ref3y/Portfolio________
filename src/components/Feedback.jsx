@@ -1,10 +1,11 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import styled from '@emotion/styled';
+import aliProfile from '../assets/ali.jpg';
 
 const FeedbackSection = styled.section`
   padding: 6rem 2rem;
-  background: var(--bg-primary);
+  background-color: var(--bg-primary);
 `;
 
 const Container = styled.div`
@@ -15,10 +16,19 @@ const Container = styled.div`
 const SectionTitle = styled(motion.h2)`
   text-align: center;
   font-size: 2.5rem;
-  margin-bottom: 3rem;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
   background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
+`;
+
+const SectionDescription = styled.p`
+  text-align: center;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto 3rem;
 `;
 
 const FeedbackGrid = styled.div`
@@ -115,11 +125,17 @@ const ClientInfo = styled.div`
   margin-top: auto;
 `;
 
-const ClientImage = styled.img`
+const ClientImage = styled.div`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  object-fit: cover;
+  background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
 `;
 
 const ClientDetails = styled.div`
@@ -157,6 +173,13 @@ const Star = styled.span`
   font-size: 1.2rem;
 `;
 
+const Rating = styled.div`
+  display: flex;
+  gap: 0.25rem;
+  color: var(--primary-color);
+  font-size: 1.25rem;
+`;
+
 const feedbacks = [
   {
     id: 1,
@@ -165,17 +188,17 @@ const feedbacks = [
     client: {
       name: "Sarah Johnson",
       role: "Retouching 8 photos in Light Room Classic",
-      image: "https://randomuser.me/api/portraits/women/1.jpg"
+      image: aliProfile
     }
   },
   {
     id: 2,
-    text: "Working with Ali was a game-changer for our wedding photos. His retouching maintained natural skin tones while perfecting every detail. The results were breathtaking!",
+    text: "Ali is a star. Very professional, very skilled, very attentive, very responsive. Highly recommended",
     rating: 5,
     client: {
       name: "Michael Chen",
       role: "Wedding Photographer",
-      image: "https://randomuser.me/api/portraits/men/2.jpg"
+      image: aliProfile
     }
   },
   {
@@ -185,7 +208,7 @@ const feedbacks = [
     client: {
       name: "Emma Davis",
       role: "Art Director",
-      image: "https://randomuser.me/api/portraits/women/3.jpg"
+      image: aliProfile
     }
   },
   {
@@ -195,7 +218,7 @@ const feedbacks = [
     client: {
       name: "David Wilson",
       role: "Family Historian",
-      image: "https://randomuser.me/api/portraits/men/4.jpg"
+      image: aliProfile
     }
   },
   {
@@ -205,7 +228,7 @@ const feedbacks = [
     client: {
       name: "Sophie Martinez",
       role: "Fashion Photographer",
-      image: "https://randomuser.me/api/portraits/women/5.jpg"
+      image: aliProfile
     }
   },
   {
@@ -215,10 +238,18 @@ const feedbacks = [
     client: {
       name: "James Thompson",
       role: "Real Estate Agent",
-      image: "https://randomuser.me/api/portraits/men/6.jpg"
+      image: aliProfile
     }
   }
 ];
+
+const getInitials = (name) => {
+  return name
+    .split(' ')
+    .map(word => word[0])
+    .join('')
+    .toUpperCase();
+};
 
 const Feedback = () => {
   const ref = useRef(null);
@@ -322,6 +353,9 @@ const Feedback = () => {
         >
           Client Feedback
         </SectionTitle>
+        <SectionDescription>
+          Here's what my clients have to say about my work
+        </SectionDescription>
         <FeedbackGrid
           ref={gridRef}
           as={motion.div}
@@ -331,16 +365,16 @@ const Feedback = () => {
         >
           {feedbacks.map((feedback) => (
             <FeedbackCard key={feedback.id} variants={cardVariants}>
-              <StarRating>
-                {[...Array(5)].map((_, index) => (
-                  <Star key={index} filled={index < feedback.rating}>
-                    ★
-                  </Star>
+              <Rating>
+                {[...Array(feedback.rating)].map((_, i) => (
+                  <span key={i}>★</span>
                 ))}
-              </StarRating>
+              </Rating>
               <FeedbackText>{feedback.text}</FeedbackText>
               <ClientInfo>
-                <ClientImage src={feedback.client.image} alt={feedback.client.name} />
+                <ClientImage>
+                  {getInitials(feedback.client.name)}
+                </ClientImage>
                 <ClientDetails>
                   <ClientName>{feedback.client.name}</ClientName>
                   <ClientRole>{feedback.client.role}</ClientRole>

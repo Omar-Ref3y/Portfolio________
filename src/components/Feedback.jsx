@@ -47,14 +47,14 @@ const FeedbackCard = styled(motion.div)`
   height: 100%;
 `;
 
-const FeedbackText = styled.p`
+const FeedbackText = styled(motion.p)`
   color: var(--text-secondary);
   font-size: 1rem;
   line-height: 1.6;
   flex: 1;
 `;
 
-const ClientInfo = styled.div`
+const ClientInfo = styled(motion.div)`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -73,7 +73,7 @@ const ProjectName = styled.p`
   font-weight: 500;
 `;
 
-const Rating = styled.div`
+const Rating = styled(motion.div)`
   display: flex;
   gap: 0.25rem;
   color: #FFD700;
@@ -87,7 +87,7 @@ const NavigationButtons = styled.div`
   margin-top: 2rem;
 `;
 
-const NavButton = styled.button`
+const NavButton = styled(motion.button)`
   background: transparent;
   border: 2px solid var(--accent-color);
   color: var(--accent-color);
@@ -113,7 +113,7 @@ const Dots = styled.div`
   margin-top: 1rem;
 `;
 
-const Dot = styled.button`
+const Dot = styled(motion.button)`
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -186,33 +186,36 @@ const feedbacks = [
   }
 ];
 
+const slideVariants = {
+  enter: (direction) => ({
+    x: direction > 0 ? '100%' : '-100%',
+    opacity: 0,
+    scale: 0.95
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+    scale: 1,
+    zIndex: 1
+  },
+  exit: (direction) => ({
+    x: direction < 0 ? '100%' : '-100%',
+    opacity: 0,
+    scale: 0.95,
+    zIndex: 0
+  })
+};
+
+const swipeConfidenceThreshold = 10000;
+const swipePower = (offset, velocity) => {
+  return Math.abs(offset) * velocity;
+};
+
 const Feedback = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true });
-
-  const slideVariants = {
-    enter: (direction) => ({
-      x: direction > 0 ? 1000 : -1000,
-      opacity: 0
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1
-    },
-    exit: (direction) => ({
-      zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
-      opacity: 0
-    })
-  };
-
-  const swipeConfidenceThreshold = 10000;
-  const swipePower = (offset, velocity) => {
-    return Math.abs(offset) * velocity;
-  };
 
   const paginate = (newDirection) => {
     setDirection(newDirection);
@@ -239,7 +242,7 @@ const Feedback = () => {
         <SectionTitle
           initial={{ opacity: 0, y: -20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
           Client Feedback
         </SectionTitle>
@@ -253,15 +256,26 @@ const Feedback = () => {
               animate="center"
               exit="exit"
               transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
-                opacity: { duration: 0.2 }
+                x: { 
+                  type: "spring", 
+                  stiffness: 200, 
+                  damping: 25,
+                  restDelta: 0.01
+                },
+                opacity: { 
+                  duration: 0.4,
+                  ease: "easeInOut" 
+                },
+                scale: {
+                  duration: 0.4,
+                  ease: "easeInOut"
+                }
               }}
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={1}
+              dragElastic={0.7}
               onDragEnd={(e, { offset, velocity }) => {
                 const swipe = swipePower(offset.x, velocity.x);
-
                 if (swipe < -swipeConfidenceThreshold) {
                   paginate(1);
                 } else if (swipe > swipeConfidenceThreshold) {
@@ -269,13 +283,36 @@ const Feedback = () => {
                 }
               }}
             >
-              <Rating>
+              <Rating
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.4 }}
+              >
                 {[...Array(feedbacks[currentIndex].rating)].map((_, i) => (
-                  <span key={i}>★</span>
+                  <motion.span
+                    key={i}
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.2 + i * 0.1, duration: 0.3 }}
+                  >
+                    ★
+                  </motion.span>
                 ))}
               </Rating>
-              <FeedbackText>{feedbacks[currentIndex].text}</FeedbackText>
-              <ClientInfo>
+              <FeedbackText
+                as={motion.p}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.4 }}
+              >
+                {feedbacks[currentIndex].text}
+              </FeedbackText>
+              <ClientInfo
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.4 }}
+              >
                 <ClientName>{feedbacks[currentIndex].client.name}</ClientName>
                 <ProjectName>{feedbacks[currentIndex].client.project}</ProjectName>
               </ClientInfo>
@@ -283,15 +320,32 @@ const Feedback = () => {
           </AnimatePresence>
         </FeedbackContainer>
         <NavigationButtons>
-          <NavButton onClick={() => paginate(-1)}>←</NavButton>
-          <NavButton onClick={() => paginate(1)}>→</NavButton>
+          <NavButton
+            as={motion.button}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => paginate(-1)}
+          >
+            ←
+          </NavButton>
+          <NavButton
+            as={motion.button}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => paginate(1)}
+          >
+            →
+          </NavButton>
         </NavigationButtons>
         <Dots>
           {feedbacks.map((_, index) => (
             <Dot
               key={index}
+              as={motion.button}
               active={index === currentIndex}
               onClick={() => handleDotClick(index)}
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.95 }}
             />
           ))}
         </Dots>

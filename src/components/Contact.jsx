@@ -1,7 +1,5 @@
-/** @jsxImportSource @emotion/react */
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { FaEnvelope, FaGithub, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
 

@@ -227,9 +227,7 @@ const About = () => {
               {displayText}
             </SectionTitle>
             <LeadText variants={itemVariants}>
-              I'm a professional Photo Editor with over 5 years of experience transforming ordinary images into extraordinary visual stories. 
-              Specializing in advanced Photoshop techniques, I excel at portrait retouching, product enhancement, and creative compositing 
-              that brings artistic vision to life.
+            I’m Ali, a Photoshop Expert and Retouching Specialist with over 10 years of experience in image editing and AI-generated visuals. I have worked with clients worldwide, delivering high-quality results with precision and efficiency
             </LeadText>
             <motion.div variants={containerVariants}>
               <SkillsGrid>

@@ -141,46 +141,46 @@ const feedbacks = [
   },
   {
     id: 2,
-    text: "Working with Omar was a pleasure. His photo manipulation skills are incredible, and he brought my creative vision to life perfectly. I highly recommend his services for any photo editing needs.",
+    text: "Ali did a great job. I would definitely hire him again in the future.",
     client: {
       name: "Michael Chen",
-      project: "Wedding Album Retouching"
+      project: "Photo Editing and Image Modification using Photoshop"
     },
     rating: 5
   },
   {
     id: 3,
-    text: "Omar restored our old family photos beautifully. His work helped us preserve precious memories that were fading away. The quality of his restoration work is remarkable.",
+    text: "I had terrible pics to start with but given the circumstances, he did a great job making them look great!",
     client: {
       name: "Emma Davis",
-      project: "Photo Restoration"
+      project: "My Pics Need Photoshop!"
     },
     rating: 5
   },
   {
     id: 4,
-    text: "Incredible attention to detail in fashion photo retouching. Omar knows exactly how to enhance images while maintaining their natural look. The results were magazine-worthy!",
+    text: "Efficient, friendly and understood the requirements of the work in entirety. Great work!",
     client: {
       name: "Sophie Martinez",
-      project: "Fashion Photography Retouching"
+      project: "Change colour of Aircraft Tail & Engines in PNG Image"
     },
     rating: 5
   },
   {
     id: 5,
-    text: "Omar's real estate photo editing made our properties look stunning. His work significantly improved our listings' visual appeal and helped us close deals faster.",
+    text: "I have trusted Ali with several lightroom and photoshop projects. He has been able to help me with many photos in return completing several projects and helping me finalize creative photo enhancements. He has been prompt and very good with detail on all fronts. He is a great person to work with and does his very best and takes great care to the details. I am appreciative to have found him and to work with him. Thank you.",
     client: {
       name: "James Thompson",
-      project: "Real Estate Photography"
+      project: "Photo Editing for Home Windows"
     },
     rating: 5
   },
   {
     id: 6,
-    text: "The photo manipulation work was mind-blowing! Omar created composite images that perfectly matched our creative vision. His technical skills are truly impressive.",
+    text: "Ali did great work very quickly for us",
     client: {
       name: "David Wilson",
-      project: "Creative Photo Manipulation"
+      project: "Urgent Photo Touch-Up Services Needed"
     },
     rating: 5
   }

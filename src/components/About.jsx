@@ -1,6 +1,9 @@
 import { useRef, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { motion, useInView } from 'framer-motion';
+import { MdPhotoCamera, MdEdit } from 'react-icons/md';
+import { FaCamera, FaPaintBrush, FaPhotoVideo, FaCrop } from 'react-icons/fa';
+import { SiAdobephotoshop, SiAdobelightroom } from 'react-icons/si';
 import 'aos/dist/aos.css';
 
 const AboutSection = styled.section`
@@ -57,19 +60,20 @@ const LeadText = styled(motion.p)`
 
 const SkillsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 2rem;
   margin-top: 3rem;
+  padding: 0 1rem;
 
   @media (max-width: 768px) {
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
   }
 `;
 
 const SkillCard = styled(motion.div)`
   background: rgba(255, 255, 255, 0.05);
-  padding: 1.5rem;
+  padding: 2rem;
   border-radius: 12px;
   text-align: center;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -77,8 +81,9 @@ const SkillCard = styled(motion.div)`
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 
   &:hover {
     transform: translateY(-5px);
@@ -86,19 +91,17 @@ const SkillCard = styled(motion.div)`
     border-color: var(--primary-color);
   }
 
-  i {
-    font-size: 2rem;
+  svg {
+    font-size: 3rem;
+    color: #3b82f6;
     margin-bottom: 0.5rem;
-    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
   }
 `;
 
 const SkillTitle = styled.h3`
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: var(--text-primary);
-  margin-bottom: 0.5rem;
+  margin: 0.5rem 0;
 `;
 
 const SkillDescription = styled.p`
@@ -106,7 +109,6 @@ const SkillDescription = styled.p`
   color: var(--text-secondary);
   line-height: 1.4;
   margin: 0;
-  flex-grow: 1;
 `;
 
 const ImageContainer = styled.div`
@@ -135,25 +137,25 @@ const AboutImage = styled(motion.img)`
 
 const skills = [
   {
-    icon: 'fa-image',
-    title: 'Photo Retoucher',
+    icon: <MdEdit />,
+    title: 'Photo Retoucher',
     description: 'Professional retouching and color grading'
   },
   {
-    icon: 'fa-object-group',
+    icon: <SiAdobephotoshop />,
     title: 'Photoshop Expert',
     description: 'Advanced manipulation and compositing'
   },
   {
-    icon: 'fa-paint-brush',
+    icon: <SiAdobelightroom />,
     title: 'Lightroom Expert',
     description: 'Color correction and batch processing'
   },
   {
-    icon: 'fa-camera',
-    title: 'AI Generated & Retouch ',
+    icon: <FaCamera />,
+    title: 'AI Generated & Retouch',
     description: 'Composition and lighting techniques'
-  },
+  }
 ];
 
 const About = () => {
@@ -226,7 +228,7 @@ const About = () => {
                     key={index}
                     variants={itemVariants}
                   >
-                    <i className={`fas ${skill.icon}`}></i>
+                    {skill.icon}
                     <SkillTitle>{skill.title}</SkillTitle>
                     <SkillDescription>{skill.description}</SkillDescription>
                   </SkillCard>

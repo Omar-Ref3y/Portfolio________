@@ -6,22 +6,16 @@ export const optimizeImage = (src, options = {}) => {
   } = options;
 
   // If the image is from an external URL, return as is
-  if (src.startsWith('http')) {
+  if (src.startsWith('http') || src.startsWith('https')) {
     return src;
   }
 
-  // For local images, construct the Netlify Image CDN URL
-  const baseUrl = import.meta.env.PROD ? 'https://res.cloudinary.com/demo/image/fetch/' : '';
+  // For local images, use relative path
+  const imagePath = src.startsWith('/') ? src.slice(1) : src;
   
   if (import.meta.env.PROD) {
-    // In production, use Netlify's image transformation
-    const params = [
-      'f_' + format,
-      'q_' + quality,
-      'w_' + width
-    ].join(',');
-    
-    return `${baseUrl}${params}/${window.location.origin}${src}`;
+    // In production, use relative path
+    return `/${imagePath}`;
   }
 
   // In development, return the original image

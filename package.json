@@ -6,11 +6,9 @@
   "homepage": "https://omar-ref3y.github.io/portfolio/",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --minify",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -30,17 +28,18 @@
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.13.5",
-    "@eslint/js": "^9.17.0",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.17.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",
-    "gh-pages": "^4.0.0",
-    "globals": "^15.14.0",
+    "terser": "^5.29.2",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.18.2",
     "vite": "^6.0.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

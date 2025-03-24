@@ -3,14 +3,19 @@ import { motion, useInView, AnimatePresence } from 'framer-motion';
 import styled from '@emotion/styled';
 
 const FeedbackSection = styled.section`
-  padding: 6rem 2rem;
+  padding: 6rem 1rem;
   background-color: var(--bg-primary);
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    padding: 4rem 1rem;
+  }
 `;
 
 const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 1rem;
 `;
 
 const SectionTitle = styled(motion.h2)`
@@ -21,6 +26,11 @@ const SectionTitle = styled(motion.h2)`
   background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
 `;
 
 const FeedbackContainer = styled.div`
@@ -28,8 +38,13 @@ const FeedbackContainer = styled.div`
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  height: 300px;
+  height: auto;
+  min-height: 300px;
   margin-bottom: 2rem;
+
+  @media (max-width: 768px) {
+    min-height: 350px;
+  }
 `;
 
 const FeedbackCard = styled(motion.div)`
@@ -37,13 +52,19 @@ const FeedbackCard = styled(motion.div)`
   backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 2rem;
-  position: relative;
+  position: absolute;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+    gap: 0.8rem;
+  }
 
   &::before {
     content: '';
@@ -58,7 +79,7 @@ const FeedbackCard = styled(motion.div)`
   }
 `;
 
-const ProjectName = styled.h4`
+const ProjectNameComponent = styled.p`
   color: var(--primary-color);
   font-size: 2rem;
   font-weight: 700;
@@ -68,6 +89,26 @@ const ProjectName = styled.h4`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: 0.5px;
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+    margin-bottom: 0.3rem;
+  }
+`;
+
+const Rating = styled(motion.div)`
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+  }
+
+  span {
+    margin-right: 0.2rem;
+  }
 `;
 
 const FeedbackText = styled(motion.p)`
@@ -75,6 +116,12 @@ const FeedbackText = styled(motion.p)`
   font-size: 1rem;
   line-height: 1.6;
   margin: 0;
+  flex-grow: 1;
+
+  @media (max-width: 768px) {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
 `;
 
 const ReadMoreButton = styled.button`
@@ -84,8 +131,12 @@ const ReadMoreButton = styled.button`
   cursor: pointer;
   font-size: 0.9rem;
   padding: 0;
-  margin-top: 0.5rem;
+  margin-left: 0.5rem;
   text-decoration: underline;
+  
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+  }
   
   &:hover {
     color: var(--accent-color);
@@ -97,39 +148,39 @@ const ClientInfo = styled(motion.div)`
   align-items: center;
   gap: 1rem;
   margin-top: auto;
+  padding-top: 1rem;
+
+  @media (max-width: 768px) {
+    padding-top: 0.8rem;
+    gap: 0.8rem;
+  }
 `;
 
-const ClientName = styled.h4`
+const ClientName = styled.span`
   color: var(--text-primary);
-  font-size: 1.1rem;
-  margin: 0;
-`;
-
-const ProjectNameComponent = styled.p`
-  color: var(--accent-color);
-  font-size: 1.5rem;
   font-weight: 600;
-  margin: 0;
-`;
+  font-size: 1rem;
 
-const Rating = styled(motion.div)`
-  display: flex;
-  gap: 0.25rem;
-  color: #FFD700;
-  font-size: 1.25rem;
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+  }
 `;
 
 const NavigationButtons = styled.div`
   display: flex;
   justify-content: center;
   gap: 1rem;
-  margin-top: 2rem;
+  margin-top: 1rem;
+
+  @media (max-width: 768px) {
+    gap: 0.5rem;
+  }
 `;
 
-const NavButton = styled(motion.button)`
-  background: transparent;
-  border: 2px solid var(--accent-color);
-  color: var(--accent-color);
+const NavButton = styled.button`
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: var(--text-primary);
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -137,11 +188,17 @@ const NavButton = styled(motion.button)`
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 1.2rem;
   transition: all 0.3s ease;
 
+  @media (max-width: 768px) {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+
   &:hover {
-    background: var(--accent-color);
-    color: var(--bg-primary);
+    background: rgba(255, 255, 255, 0.2);
   }
 `;
 
@@ -150,21 +207,25 @@ const Dots = styled.div`
   justify-content: center;
   gap: 0.5rem;
   margin-top: 1rem;
+
+  @media (max-width: 768px) {
+    gap: 0.4rem;
+  }
 `;
 
-const Dot = styled(motion.button)`
-  width: 8px;
-  height: 8px;
+const Dot = styled.button`
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background: ${props => props.active ? 'var(--accent-color)' : 'var(--text-secondary)'};
   border: none;
-  padding: 0;
+  background-color: ${props => props.active ? 'var(--primary-color)' : 'rgba(255, 255, 255, 0.2)'};
   cursor: pointer;
+  padding: 0;
   transition: all 0.3s ease;
-  opacity: ${props => props.active ? 1 : 0.5};
 
-  &:hover {
-    opacity: 1;
+  @media (max-width: 768px) {
+    width: 8px;
+    height: 8px;
   }
 `;
 
@@ -261,9 +322,9 @@ const feedbacks = [
 
 const slideVariants = {
   enter: (direction) => ({
-    x: direction > 0 ? '100%' : '-100%',
+    x: direction > 0 ? 1000 : -1000,
     opacity: 0,
-    scale: 0.95
+    scale: 0.8
   }),
   center: {
     x: 0,
@@ -272,10 +333,9 @@ const slideVariants = {
     zIndex: 1
   },
   exit: (direction) => ({
-    x: direction < 0 ? '100%' : '-100%',
+    x: direction < 0 ? 1000 : -1000,
     opacity: 0,
-    scale: 0.95,
-    zIndex: 0
+    scale: 0.8
   })
 };
 
@@ -289,7 +349,10 @@ const Feedback = () => {
   const [direction, setDirection] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
   const containerRef = useRef(null);
-  const isInView = useInView(containerRef, { once: true });
+  const isInView = useInView(containerRef, { 
+    margin: "-10%",
+    amount: 0.2
+  });
 
   const TEXT_LIMIT = 150;
 
@@ -303,12 +366,14 @@ const Feedback = () => {
   const paginate = (newDirection) => {
     setDirection(newDirection);
     setCurrentIndex((prevIndex) => (prevIndex + newDirection + feedbacks.length) % feedbacks.length);
+    setIsExpanded(false); // Reset expanded state on slide change
   };
 
   const handleDotClick = (index) => {
     const newDirection = index > currentIndex ? 1 : -1;
     setDirection(newDirection);
     setCurrentIndex(index);
+    setIsExpanded(false); // Reset expanded state on dot click
   };
 
   useEffect(() => {
@@ -323,14 +388,14 @@ const Feedback = () => {
     <FeedbackSection ref={containerRef}>
       <Container>
         <SectionTitle
-          initial={{ opacity: 0, y: -20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         >
           Client Feedback
         </SectionTitle>
         <FeedbackContainer>
-          <AnimatePresence mode="wait" custom={direction}>
+          <AnimatePresence initial={false} mode="wait" custom={direction}>
             <FeedbackCard
               key={currentIndex}
               custom={direction}
@@ -341,22 +406,15 @@ const Feedback = () => {
               transition={{
                 x: { 
                   type: "spring", 
-                  stiffness: 200, 
-                  damping: 25,
-                  restDelta: 0.01
+                  stiffness: 300,
+                  damping: 30
                 },
-                opacity: { 
-                  duration: 0.4,
-                  ease: "easeInOut" 
-                },
-                scale: {
-                  duration: 0.4,
-                  ease: "easeInOut"
-                }
+                opacity: { duration: 0.2 },
+                scale: { duration: 0.2 }
               }}
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.7}
+              dragElastic={1}
               onDragEnd={(e, { offset, velocity }) => {
                 const swipe = swipePower(offset.x, velocity.x);
                 if (swipe < -swipeConfidenceThreshold) {
@@ -365,33 +423,35 @@ const Feedback = () => {
                   paginate(-1);
                 }
               }}
-              whileHover={{ 
-                scale: 1.02,
-                transition: { duration: 0.3 }
-              }}
             >
-              <ProjectNameComponent>{feedbacks[currentIndex].client.project}</ProjectNameComponent>
+              <ProjectNameComponent
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {feedbacks[currentIndex].client.project}
+              </ProjectNameComponent>
               <Rating
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.4 }}
+                transition={{ duration: 0.3, delay: 0.1 }}
               >
                 {[...Array(feedbacks[currentIndex].rating)].map((_, i) => (
                   <motion.span
                     key={i}
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.2 + i * 0.1, duration: 0.3 }}
+                    transition={{ duration: 0.2, delay: 0.1 + i * 0.1 }}
                   >
                     ★
                   </motion.span>
                 ))}
               </Rating>
               <FeedbackText
-                as={motion.p}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.4 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
               >
                 {getDisplayText(feedbacks[currentIndex].text)}
                 {feedbacks[currentIndex].text.length > TEXT_LIMIT && (
@@ -406,10 +466,9 @@ const Feedback = () => {
                 )}
               </FeedbackText>
               <ClientInfo
-                as={motion.div}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.4 }}
+                transition={{ duration: 0.3, delay: 0.3 }}
               >
                 <ClientName>{feedbacks[currentIndex].client.name}</ClientName>
               </ClientInfo>
@@ -420,7 +479,7 @@ const Feedback = () => {
           <NavButton
             as={motion.button}
             whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
+            whileTap={{ scale: 0.9 }}
             onClick={() => paginate(-1)}
           >
             ←
@@ -428,7 +487,7 @@ const Feedback = () => {
           <NavButton
             as={motion.button}
             whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
+            whileTap={{ scale: 0.9 }}
             onClick={() => paginate(1)}
           >
             →
@@ -442,7 +501,7 @@ const Feedback = () => {
               active={index === currentIndex}
               onClick={() => handleDotClick(index)}
               whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.95 }}
+              whileTap={{ scale: 0.9 }}
             />
           ))}
         </Dots>

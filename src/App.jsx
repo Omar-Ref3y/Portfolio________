@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import styled from '@emotion/styled';
-import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -13,7 +13,6 @@ import Feedback from './components/Feedback';
 import Projects from './components/Projects';
 import ProjectDetails from './components/ProjectDetails';
 
-// Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
 
 const AppWrapper = styled.div`
@@ -43,7 +42,6 @@ const StyledFooter = styled.footer`
   font-size: 0.9rem;
 `;
 
-// Create a HomePage component to contain all sections
 const HomePage = () => {
   return (
     <>
@@ -68,10 +66,8 @@ const HomePage = () => {
 
 function App() {
   useEffect(() => {
-    // Initialize GSAP ScrollTrigger
     ScrollTrigger.refresh();
 
-    // Add scroll trigger for each section
     const sections = document.querySelectorAll('[id]');
     sections.forEach((section) => {
       ScrollTrigger.create({
@@ -87,7 +83,6 @@ function App() {
       });
     });
 
-    // Initialize AOS
     AOS.init({
       duration: 1000,
       once: true,
@@ -95,7 +90,6 @@ function App() {
       disable: 'mobile'
     });
 
-    // Enable smooth scrolling for all anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();

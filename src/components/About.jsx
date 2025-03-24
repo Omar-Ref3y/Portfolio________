@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useRef, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
+import { motion, useInView } from 'framer-motion';
 import 'aos/dist/aos.css';
 
 const AboutSection = styled.section`

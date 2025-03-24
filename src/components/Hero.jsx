@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
-import { TypeAnimation } from 'react-type-animation';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 const HeroSection = styled.section`
   min-height: 100vh;
@@ -32,7 +32,7 @@ const Title = styled(motion.h1)`
   -webkit-text-fill-color: transparent;
 `;
 
-const TypedText = styled(TypeAnimation)`
+const TypedText = styled.div`
   font-size: clamp(1.5rem, 5vw, 2.5rem);
   font-weight: 600;
   margin-bottom: 2rem;
@@ -227,42 +227,9 @@ const Hero = () => {
         >
           Hi, I'm Ali
         </Title>
-        <TypedText
-          sequence={[
-            'Photo Editor',
-            1500,
-            '',
-            500,
-            'High-End Image Retouching',
-            1500,
-            '',
-            500,
-            'AI-Generated Visuals',
-            1500,
-            '',
-            500,
-            'Background Removal & Object Isolation',
-            1500,
-            '',
-            500,
-            'Photo Restoration & Colorization',
-            1500,
-            '',
-            500,
-            'Lighting & Shadow Adjustments',
-            1500,
-            '',
-            500,
-            'Fast & High-Quality Delivery',
-            1500,
-            '',
-            500,
-          ]}
-          wrapper="div"
-          cursor={true}
-          repeat={Infinity}
-          style={{ fontSize: 'clamp(1.5rem, 5vw, 2.5rem)', fontWeight: '600' }}
-        />
+        <TypedText>
+          Photo Editor
+        </TypedText>
         <Subtitle
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
+import { motion, AnimatePresence } from 'framer-motion';
 import { HashRouter, useLocation, useNavigate } from 'react-router-dom';
 
 const NavContainer = styled(motion.nav)`
@@ -155,9 +155,7 @@ const Navbar = () => {
   const handleNavClick = (e, target) => {
     e.preventDefault();
     if (isProjectPage) {
-      // If we're on a project page, first navigate to home
       navigate('/');
-      // Then scroll to the section after a short delay to allow for page load
       setTimeout(() => {
         const element = document.querySelector(target.replace('#', '#section-'));
         if (element) {
@@ -165,7 +163,6 @@ const Navbar = () => {
         }
       }, 100);
     } else {
-      // If we're on the home page, just scroll
       const element = document.querySelector(target.replace('#', '#section-'));
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });

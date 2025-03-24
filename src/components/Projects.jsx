@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 
-// Import first image from each category
 import aiPreview from '../assets/AI/Ai (1).jpg';
 import ecommercePreview from '../assets/E-commerce/E-commerce (1).png';
 import fashionPreview from '../assets/Fashion/Fashion (1).png';
@@ -14,8 +13,6 @@ import portraitPreview from '../assets/Portrait/Portrait (1).png';
 import realEstatePreview from '../assets/Real State/Real state (1).png';
 import weddingPreview from '../assets/Wedding/Wedding (1).png';
 import removePreview from '../assets/remove/remove person (1).png';
-
-// Import rest of the code...
 
 const projects = [
   {

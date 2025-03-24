@@ -4,7 +4,6 @@ import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import ImageModal from './ImageModal';
 
-// Import all images dynamically
 const imageModules = import.meta.glob('../assets/**/*.{png,jpg,jpeg,gif}', { eager: true });
 
 const ProjectDetailsContainer = styled(motion.div)`
@@ -87,7 +86,6 @@ const ProjectDetails = () => {
   const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
-    // Find project data
     const projectData = projects.find(p => p.id === id);
     if (!projectData) {
       navigate('/');
@@ -95,7 +93,6 @@ const ProjectDetails = () => {
     }
     setProject(projectData);
 
-    // Get gallery images for this project
     const projectImages = Object.entries(imageModules)
       .filter(([path]) => path.includes(`/${projectData.folder}/`))
       .map(([path, module]) => ({
@@ -105,7 +102,6 @@ const ProjectDetails = () => {
 
     setGalleryImages(projectImages);
 
-    // Scroll to top when component mounts
     window.scrollTo(0, 0);
   }, [id, navigate]);
 
@@ -150,7 +146,6 @@ const ProjectDetails = () => {
   );
 };
 
-// Project data
 const projects = [
   {
     id: 'ai',

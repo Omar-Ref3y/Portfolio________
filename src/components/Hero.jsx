@@ -8,6 +8,7 @@ import { TypeAnimation } from 'react-type-animation';
 const HeroSection = styled.section`
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
@@ -22,6 +23,7 @@ const HeroContent = styled.div`
   padding: 0 1rem;
   max-width: 1200px;
   width: 100%;
+  margin-bottom: 4rem;
 `;
 
 const Title = styled(motion.h1)`
@@ -84,44 +86,48 @@ const Button = styled(motion.a)`
 
 const ScrollIndicator = styled(motion.div)`
   position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 3rem;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  z-index: 2;
+  width: fit-content;
 `;
 
 const ScrollText = styled.span`
   color: var(--text-secondary);
   font-size: 0.9rem;
-  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-align: center;
 `;
 
 const ScrollIcon = styled(motion.div)`
   width: 30px;
   height: 50px;
   border: 2px solid var(--text-secondary);
-  border-radius: 15px;
+  border-radius: 25px;
   position: relative;
+  margin: 0 auto;
   
   &::before {
     content: '';
     position: absolute;
     top: 8px;
     left: 50%;
+    transform: translateX(-50%);
     width: 6px;
     height: 6px;
     background: var(--text-secondary);
     border-radius: 50%;
-    transform: translateX(-50%);
-    animation: scrollAnimation 2s infinite;
+    animation: scrollDown 2s infinite;
   }
 
-  @keyframes scrollAnimation {
+  @keyframes scrollDown {
     0% {
       opacity: 1;
       transform: translate(-50%, 0);

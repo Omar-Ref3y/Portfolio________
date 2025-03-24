@@ -97,18 +97,11 @@ const ProjectNameComponent = styled.p`
 `;
 
 const Rating = styled(motion.div)`
-  color: var(--primary-color);
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-
-  @media (max-width: 768px) {
-    font-size: 1rem;
-    margin-bottom: 0.3rem;
-  }
-
-  span {
-    margin-right: 0.2rem;
-  }
+  display: flex;
+  gap: 4px;
+  margin: 8px 0;
+  font-size: 24px;
+  color: #ffd700; /* Gold color for stars */
 `;
 
 const FeedbackText = styled(motion.p)`
@@ -366,14 +359,14 @@ const Feedback = () => {
   const paginate = (newDirection) => {
     setDirection(newDirection);
     setCurrentIndex((prevIndex) => (prevIndex + newDirection + feedbacks.length) % feedbacks.length);
-    setIsExpanded(false); // Reset expanded state on slide change
+    setIsExpanded(false); 
   };
 
   const handleDotClick = (index) => {
     const newDirection = index > currentIndex ? 1 : -1;
     setDirection(newDirection);
     setCurrentIndex(index);
-    setIsExpanded(false); // Reset expanded state on dot click
+    setIsExpanded(false); 
   };
 
   useEffect(() => {

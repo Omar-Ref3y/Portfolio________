@@ -5,24 +5,19 @@ export const optimizeImage = (src, options = {}) => {
     format = 'webp'
   } = options;
 
-  // If the image is from an external URL, return as is
   if (src.startsWith('http') || src.startsWith('https')) {
     return src;
   }
 
-  // For local images, use relative path
   const imagePath = src.startsWith('/') ? src.slice(1) : src;
   
   if (import.meta.env.PROD) {
-    // In production, use relative path
     return `/${imagePath}`;
   }
 
-  // In development, return the original image
   return src;
 };
 
-// Preload important images
 export const preloadImage = (src, options = {}) => {
   const imageUrl = optimizeImage(src, options);
   const link = document.createElement('link');

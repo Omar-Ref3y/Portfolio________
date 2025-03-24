@@ -162,7 +162,6 @@ const About = () => {
     once: false
   });
 
-  // Handle window resize
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 968);
@@ -186,7 +185,6 @@ const About = () => {
 
   const profileImage = '/profile.jpg';
 
-  // Preload the profile image
   useEffect(() => {
     preloadImage(profileImage, { width: 600 });
   }, []);

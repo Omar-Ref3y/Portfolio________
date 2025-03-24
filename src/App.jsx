@@ -7,7 +7,6 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
 import Contact from './components/Contact';
-import Footer from './components/Footer';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Feedback from './components/Feedback';
@@ -34,6 +33,14 @@ const MainContent = styled.main`
   display: flex;
   flex-direction: column;
   background-color: var(--bg-primary);
+`;
+
+const StyledFooter = styled.footer`
+  text-align: center;
+  padding: 1rem;
+  background-color: var(--bg-primary);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
 `;
 
 // Create a HomePage component to contain all sections
@@ -115,9 +122,9 @@ function App() {
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </MainContent>
-        <Footer>
-          {new Date().getFullYear()} | Crafted with passion
-        </Footer>
+        <StyledFooter>
+          {new Date().getFullYear()} | Developed by omarrefay2004@gmail.com
+        </StyledFooter>
       </AppWrapper>
     </Router>
   );

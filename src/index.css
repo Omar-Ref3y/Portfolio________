@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
 :root {
   --primary-color: #4f46e5;
   --accent-color: #22d3ee;
@@ -12,6 +14,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  border: none;
+  outline: none;
 }
 
 html {
@@ -134,6 +138,39 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+img {
+  width: 100%;
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Container */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Sections */
+section {
+  padding: 5rem 0;
+}
+
+/* Buttons */
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Utilities */
+.text-gradient {
+  background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Media Queries */
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -154,5 +191,15 @@ button:focus-visible {
   
   .section {
     padding: 4rem 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  section {
+    padding: 3rem 0;
+  }
+  
+  .container {
+    padding: 0 1.5rem;
   }
 }

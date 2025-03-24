@@ -38,12 +38,11 @@ const FeedbackContainer = styled.div`
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  height: auto;
-  min-height: 300px;
-  margin-bottom: 2rem;
+  min-height: 450px;
+  padding: 0 1rem;
 
   @media (max-width: 768px) {
-    min-height: 350px;
+    min-height: 500px;
   }
 `;
 
@@ -52,48 +51,31 @@ const FeedbackCard = styled(motion.div)`
   backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 2rem;
-  position: absolute;
+  position: relative;
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-height: 300px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
   @media (max-width: 768px) {
     padding: 1.5rem;
-    gap: 0.8rem;
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      45deg,
-      rgba(var(--primary-rgb), 0.05),
-      rgba(var(--accent-rgb), 0.05)
-    );
-    z-index: -1;
+    min-height: 400px;
   }
 `;
 
-const ProjectNameComponent = styled.p`
-  color: var(--primary-color);
+const ProjectNameComponent = styled.h3`
+  color: var(--accent-color);
   font-size: 2rem;
-  font-weight: 700;
-  margin: 0 0 0.5rem 0;
-  opacity: 0.95;
-  background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+  margin-bottom: 0rem;
+  font-weight: 600;
+  background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  letter-spacing: 0.5px;
-
-  @media (max-width: 768px) {
-    font-size: 1.5rem;
-    margin-bottom: 0.3rem;
-  }
+  background-clip: text;
 `;
 
 const Rating = styled(motion.div)`
@@ -107,13 +89,35 @@ const Rating = styled(motion.div)`
 const FeedbackText = styled(motion.p)`
   color: var(--text-secondary);
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: 1.7;
   margin: 0;
   flex-grow: 1;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+  max-height: 200px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) transparent;
+  padding-right: 10px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 3px;
+  }
 
   @media (max-width: 768px) {
     font-size: 0.95rem;
-    line-height: 1.5;
+    line-height: 1.6;
+    max-height: 180px;
   }
 `;
 
@@ -149,77 +153,60 @@ const ClientInfo = styled(motion.div)`
   }
 `;
 
-const ClientName = styled.span`
-  color: var(--text-primary);
+const ClientName = styled.h4`
+  color: var(--accent-color);
+  font-size: 1.1rem;
   font-weight: 600;
-  font-size: 1rem;
-
-  @media (max-width: 768px) {
-    font-size: 0.9rem;
-  }
+  margin: 0;
+  background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 `;
 
 const NavigationButtons = styled.div`
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  margin-top: 1rem;
-
-  @media (max-width: 768px) {
-    gap: 0.5rem;
-  }
+  gap: 1.5rem;
+  margin-top: 0rem;
 `;
 
 const NavButton = styled.button`
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  color: var(--text-primary);
-  width: 40px;
-  height: 40px;
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  width: 50px;
+  height: 60px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   transition: all 0.3s ease;
 
-  @media (max-width: 768px) {
-    width: 35px;
-    height: 35px;
-    font-size: 1rem;
-  }
-
   &:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--primary-color);
+    color: white;
   }
 `;
 
 const Dots = styled.div`
   display: flex;
   justify-content: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
-
-  @media (max-width: 768px) {
-    gap: 0.4rem;
-  }
+  gap: 0.8rem;
+  margin-top: 2rem;
 `;
 
 const Dot = styled.button`
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
+  background: ${props => props.active ? 'var(--primary-color)' : 'rgba(255, 255, 255, 0.2)'};
   border: none;
-  background-color: ${props => props.active ? 'var(--primary-color)' : 'rgba(255, 255, 255, 0.2)'};
-  cursor: pointer;
   padding: 0;
+  cursor: pointer;
   transition: all 0.3s ease;
-
-  @media (max-width: 768px) {
-    width: 8px;
-    height: 8px;
-  }
 `;
 
 const feedbacks = [
@@ -227,15 +214,14 @@ const feedbacks = [
     id: 1,
     text: "Skills great. Responsiveness great. Communication great. Availability great. Cooperation great. I felt like I could trust his work",
     client: {
-
       project: "Photo resizing with dedicated Ai tool"
     },
     rating: 5
-  },{
+  },
+  {
     id: 2,
     text: "Ali did a great job. I would definitely hire him again in the future.",
     client: {
-
       project: "Photo Editing and Image Modification using Photoshop"
     },
     rating: 5
@@ -244,7 +230,6 @@ const feedbacks = [
     id: 3,
     text: "I had terrible pics to start with but given the circumstances, he did a great job making them look great!",
     client: {
-
       project: "My Pics Need Photoshop!"
     },
     rating: 5
@@ -253,7 +238,6 @@ const feedbacks = [
     id: 4,
     text: "Efficient, friendly and understood the requirements of the work in entirety. Great work!",
     client: {
-
       project: "Change colour of Aircraft Tail & Engines in PNG Image"
     },
     rating: 5
@@ -270,17 +254,14 @@ const feedbacks = [
     id: 6,
     text: "Ali did great work very quickly for us",
     client: {
-
       project: "Urgent Photo Touch-Up Services Needed"
     },
     rating: 5
-  }
-  ,
+  },
   {
     id: 7,
     text: "I recently worked with Ali on a photo retouching project, and I couldn't be more satisfied with the results. Ali demonstrated excellent skills in photo editing and paid close attention to every detail. He was responsive and completed the project on time, delivering exactly what I envisioned. If you're looking for a reliable and talented photo retouching expert, I highly recommend Ali!",
     client: {
-
       project: "Photo Retouching Expert Needed"
     },
     rating: 5
@@ -289,7 +270,6 @@ const feedbacks = [
     id: 8,
     text: "Super attentive to detail, kind, honest, hard worker, will contact this freelancer for multi-RAW photography edit and merge jobs in the future!!!!!",
     client: {
-
       project: "Image Editing & Enhancement Using Photoshop"
     },
     rating: 5
@@ -298,7 +278,6 @@ const feedbacks = [
     id: 9,
     text: "Thank you so much for your diligence and hard work on this project. The colors on the photo correction were above my expectations. You did such a great job on the landscape in addition to the people and the items that were in need of repair from scratches and color loss. I appreciate your skills and hope that you have success in your future endeavors! Thank you again.",
     client: {
-
       project: "Retouching 3 photographs with specific instructions."
     },
     rating: 5
@@ -309,7 +288,7 @@ const feedbacks = [
     client: {
       project: "Image Edit"
     },
-    rating: 5,
+    rating: 5
   }
 ];
 
@@ -337,6 +316,8 @@ const swipePower = (offset, velocity) => {
   return Math.abs(offset) * velocity;
 };
 
+const TEXT_LIMIT = 150;
+
 const Feedback = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
@@ -346,8 +327,6 @@ const Feedback = () => {
     margin: "-10%",
     amount: 0.2
   });
-
-  const TEXT_LIMIT = 150;
 
   const getDisplayText = (text) => {
     if (text.length <= TEXT_LIMIT || isExpanded) {
@@ -463,7 +442,6 @@ const Feedback = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.3 }}
               >
-                <ClientName>{feedbacks[currentIndex].client.name}</ClientName>
               </ClientInfo>
             </FeedbackCard>
           </AnimatePresence>

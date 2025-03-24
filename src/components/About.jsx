@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { MdPhotoCamera, MdEdit } from 'react-icons/md';
 import { FaCamera, FaPaintBrush, FaPhotoVideo, FaCrop } from 'react-icons/fa';
 import { SiAdobephotoshop, SiAdobelightroom } from 'react-icons/si';
+import { optimizeImage, preloadImage } from '../utils/imageLoader';
 import 'aos/dist/aos.css';
 
 const AboutSection = styled.section`
@@ -154,27 +155,22 @@ const skills = [
 const About = () => {
   const ref = useRef(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [scrollDirection, setScrollDirection] = useState('down');
-  const { scrollY } = useScroll();
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 968);
   const isInView = useInView(ref, { 
-    margin: "-20%",
-    amount: 0.3 // Trigger when 30% of the section is visible
-  });
-  const [displayText, setDisplayText] = useState('About Me');
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [hasBeenVisible, setHasBeenVisible] = useState(false);
-
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    const direction = latest > lastScrollY ? "down" : "up";
-    setScrollDirection(direction);
-    setLastScrollY(latest);
+    margin: "-10%",
+    amount: 0.2,
+    once: false
   });
 
+  // Handle window resize
   useEffect(() => {
-    if (isInView) {
-      setHasBeenVisible(true);
-    }
-  }, [isInView]);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 968);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -188,63 +184,50 @@ const About = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  useEffect(() => {
-    if (isInView) {
-      const chars = "AAbout Me".split("");
-      let i = 0;
-      setDisplayText('');
-      
-      const timer = setInterval(() => {
-        if (i < chars.length) {
-          setDisplayText(prev => prev + chars[i]);
-          i++;
-        } else {
-          clearInterval(timer);
-        }
-      }, 200);
-      
-      return () => clearInterval(timer);
-    }
-  }, [isInView]);
+  const profileImage = '/profile.jpg';
 
-  const getAnimationState = () => {
-    if (!hasBeenVisible && !isInView) return "hidden";
-    if (!isInView) return scrollDirection === "up" ? "visible" : "hidden";
-    return "visible";
-  };
+  // Preload the profile image
+  useEffect(() => {
+    preloadImage(profileImage, { width: 600 });
+  }, []);
 
   return (
     <AboutSection id="about" ref={ref}>
       <Container>
         <AboutContent
           as={motion.div}
-          initial="hidden"
-          animate={getAnimationState()}
-          variants={{
-            hidden: { 
-              opacity: 0
-            },
-            visible: {
-              opacity: 1,
-              transition: {
-                duration: 1.5,
-                ease: [0.4, 0, 0.2, 1]
-              }
+          initial={{ opacity: 0 }}
+          animate={{
+            opacity: isInView ? 1 : 0,
+            transition: {
+              duration: 0.8,
+              ease: [0.4, 0, 0.2, 1]
             }
           }}
         >
           <AboutText>
             <motion.h2 
-              initial={{ opacity: 0, y: 50 }} 
-              animate={getAnimationState() === "visible" ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }} 
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ 
+                opacity: isInView ? 1 : 0,
+                y: isInView ? 0 : 50
+              }}
               transition={{ duration: 1.5, ease: [0.4, 0, 0.2, 1] }}
             >
               About Me
             </motion.h2>
             <motion.div 
-              initial={{ opacity: 0, x: -100 }} 
-              animate={getAnimationState() === "visible" ? { opacity: 1, x: 0 } : { opacity: 0, x: -100 }} 
-              transition={{ duration: 1.8, ease: [0.4, 0, 0.2, 1], delay: 0.5 }}
+              initial={{ 
+                opacity: 0,
+                x: isMobile ? 0 : -100,
+                y: isMobile ? 50 : 0
+              }}
+              animate={{ 
+                opacity: isInView ? 1 : 0,
+                x: isInView ? 0 : (isMobile ? 0 : -100),
+                y: isInView ? 0 : (isMobile ? 50 : 0)
+              }}
+              transition={{ duration: 1.8, ease: [0.4, 0, 0.2, 1], delay: 0.3 }}
             >
               <LeadText>
                 I'm Ali, a Photoshop Expert and Retouching Specialist with over 10 years of experience in image editing and AI-generated visuals. I have worked with clients worldwide, delivering high-quality results with precision and efficiency
@@ -252,18 +235,29 @@ const About = () => {
             </motion.div>
             
             <motion.div 
-              initial={{ opacity: 0, x: -100 }} 
-              animate={getAnimationState() === "visible" ? { opacity: 1, x: 0 } : { opacity: 0, x: -100 }} 
-              transition={{ duration: 1.8, ease: [0.4, 0, 0.2, 1], delay: 0.8 }}
+              initial={{ 
+                opacity: 0,
+                x: isMobile ? 0 : -100,
+                y: isMobile ? 50 : 0
+              }}
+              animate={{ 
+                opacity: isInView ? 1 : 0,
+                x: isInView ? 0 : (isMobile ? 0 : -100),
+                y: isInView ? 0 : (isMobile ? 50 : 0)
+              }}
+              transition={{ duration: 1.8, ease: [0.4, 0, 0.2, 1], delay: 0.5 }}
             >
               <SkillsGrid>
                 {skills.map((skill, index) => (
                   <SkillCard
                     key={index}
                     as={motion.div}
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={getAnimationState() === "visible" ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-                    transition={{ duration: 1.5, ease: [0.4, 0, 0.2, 1], delay: 1.2 + (index * 0.2) }}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ 
+                      opacity: isInView ? 1 : 0,
+                      y: isInView ? 0 : 30
+                    }}
+                    transition={{ duration: 1.5, ease: [0.4, 0, 0.2, 1], delay: 0.8 + (index * 0.1) }}
                     whileHover={{ 
                       scale: 1.02,
                       transition: { duration: 0.5 }
@@ -289,21 +283,36 @@ const About = () => {
           </AboutText>
           
           <motion.div 
-            initial={{ opacity: 0, x: 100 }} 
-            animate={getAnimationState() === "visible" ? { opacity: 1, x: 0 } : { opacity: 0, x: 100 }} 
-            transition={{ duration: 1.8, ease: [0.4, 0, 0.2, 1], delay: 0.5 }}
+            initial={{ 
+              opacity: 0,
+              x: isMobile ? 0 : 100,
+              y: isMobile ? 50 : 0
+            }}
+            animate={{ 
+              opacity: isInView ? 1 : 0,
+              x: isInView ? 0 : (isMobile ? 0 : 100),
+              y: isInView ? 0 : (isMobile ? 50 : 0)
+            }}
+            transition={{ duration: 1.8, ease: [0.4, 0, 0.2, 1], delay: 0.3 }}
           >
             <ImageContainer>
               <motion.img 
-                src="/profile.jpg" 
+                src={optimizeImage(profileImage, { 
+                  width: 600,
+                  quality: 85
+                })}
                 alt="Ali's Profile"
                 initial={{ opacity: 0, scale: 0.95 }}
-                animate={getAnimationState() === "visible" ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
-                transition={{ duration: 1.5, ease: [0.4, 0, 0.2, 1], delay: 0.8 }}
+                animate={{ 
+                  opacity: isInView ? 1 : 0,
+                  scale: isInView ? 1 : 0.95
+                }}
+                transition={{ duration: 1.5, ease: [0.4, 0, 0.2, 1], delay: 0.5 }}
                 whileHover={{ 
                   scale: 1.05,
                   transition: { duration: 0.5 }
                 }}
+                loading="eager"
               />
             </ImageContainer>
           </motion.div>

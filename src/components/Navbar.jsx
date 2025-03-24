@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
-import { HashRouter, useLocation } from 'react-router-dom';
+import { HashRouter, useLocation, useNavigate } from 'react-router-dom';
 
 const NavContainer = styled(motion.nav)`
   position: fixed;
@@ -140,6 +140,8 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const isProjectPage = location.pathname.startsWith('/project/');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -152,11 +154,24 @@ const Navbar = () => {
 
   const handleNavClick = (e, target) => {
     e.preventDefault();
-    const element = document.querySelector(target.replace('#', '#section-'));
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setMobileMenuOpen(false);
+    if (isProjectPage) {
+      // If we're on a project page, first navigate to home
+      navigate('/');
+      // Then scroll to the section after a short delay to allow for page load
+      setTimeout(() => {
+        const element = document.querySelector(target.replace('#', '#section-'));
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      // If we're on the home page, just scroll
+      const element = document.querySelector(target.replace('#', '#section-'));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
+    setMobileMenuOpen(false);
   };
 
   const navLinks = [

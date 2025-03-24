@@ -40,19 +40,19 @@ const MainContent = styled.main`
 const HomePage = () => {
   return (
     <>
-      <div id="home">
+      <div id="section-home">
         <Hero />
       </div>
-      <div id="about">
+      <div id="section-about">
         <About />
       </div>
-      <div id="projects">
+      <div id="section-projects">
         <Projects />
       </div>
-      <div id="feedback">
+      <div id="section-feedback">
         <Feedback />
       </div>
-      <div id="contact">
+      <div id="section-contact">
         <Contact />
       </div>
     </>

@@ -329,13 +329,13 @@ const Contact = () => {
       icon: <FaEnvelope />,
       title: "Email",
       description: "Professional inquiries welcome",
-      href: "mailto:omarrefay2004@gmail.com"
+      href: "mailto:ali.sa3dawy2024@gmail.com"
     },
     {
       icon: <FaWhatsapp />,
       title: "WhatsApp",
       description: "Direct communication for quick responses",
-      href: "https://wa.me/+201001234567"
+      href: "https://wa.me/+201000870099"
     },
     {
       icon: <FaGithub />,

@@ -136,33 +136,23 @@ const AboutImage = styled(motion.img)`
 const skills = [
   {
     icon: 'fa-image',
-    title: 'Photo Editing',
+    title: 'Photo Retoucher',
     description: 'Professional retouching and color grading'
   },
   {
     icon: 'fa-object-group',
-    title: 'Photoshop',
+    title: 'Photoshop Expert',
     description: 'Advanced manipulation and compositing'
   },
   {
     icon: 'fa-paint-brush',
-    title: 'Lightroom',
+    title: 'Lightroom Expert',
     description: 'Color correction and batch processing'
   },
   {
     icon: 'fa-camera',
-    title: 'Photography',
+    title: 'AI Generated & Retouch ',
     description: 'Composition and lighting techniques'
-  },
-  {
-    icon: 'fa-crop',
-    title: 'Graphic Design',
-    description: 'Layout and visual communication'
-  },
-  {
-    icon: 'fa-video',
-    title: 'Video Editing',
-    description: 'Motion graphics and color grading'
   },
 ];
 
@@ -173,7 +163,7 @@ const About = () => {
   
   useEffect(() => {
     if (isInView) {
-      const finalText = "About Me";
+      const finalText = "AAbout Me";
       let i = 0;
       setDisplayText('');  // Clear first
       
@@ -248,7 +238,7 @@ const About = () => {
             <AboutImage
               as={motion.img}
               src="/profile.jpg"
-              alt="Omar's Profile"
+              alt="Ali's Profile"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}

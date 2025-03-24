@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import styled from '@emotion/styled';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -111,9 +111,10 @@ function App() {
         <Navbar />
         <MainContent>
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="project/:id" element={<ProjectDetails />} />
-            <Route path="*" element={<Navigate to="/" />} />
+            <Route path="/" element={<Navigate to="/home" />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/project/:id" element={<ProjectDetails />} />
+            <Route path="*" element={<Navigate to="/home" />} />
           </Routes>
         </MainContent>
         <StyledFooter>

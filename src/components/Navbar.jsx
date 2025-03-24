@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { motion, AnimatePresence } from 'framer-motion';
-import { HashRouter, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const NavContainer = styled(motion.nav)`
   position: fixed;
@@ -138,10 +138,11 @@ const SocialLink = styled(motion.a)`
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
   const location = useLocation();
   const navigate = useNavigate();
-  const isProjectPage = location.pathname.startsWith('/project/');
+  const isProjectPage = location.pathname.includes('/project/');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -155,7 +156,7 @@ const Navbar = () => {
   const handleNavClick = (e, target) => {
     e.preventDefault();
     if (isProjectPage) {
-      navigate('/');
+      navigate('/home');
       setTimeout(() => {
         const element = document.querySelector(target.replace('#', '#section-'));
         if (element) {
@@ -168,7 +169,7 @@ const Navbar = () => {
         element.scrollIntoView({ behavior: 'smooth' });
       }
     }
-    setMobileMenuOpen(false);
+    setIsOpen(false);
   };
 
   const navLinks = [
@@ -227,16 +228,16 @@ const Navbar = () => {
         </NavLinks>
 
         <MobileMenuButton
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          onClick={() => setIsOpen(!isOpen)}
           whileTap={{ scale: 0.95 }}
         >
-          <i className={`fas fa-${mobileMenuOpen ? 'times' : 'bars'}`}></i>
+          <i className={`fas fa-${isOpen ? 'times' : 'bars'}`}></i>
         </MobileMenuButton>
 
         <MobileMenu
-          isOpen={mobileMenuOpen}
+          isOpen={isOpen}
           initial={false}
-          animate={mobileMenuOpen ? { opacity: 1 } : { opacity: 0 }}
+          animate={isOpen ? { opacity: 1 } : { opacity: 0 }}
         >
           {navLinks.map((link) => (
             <NavLink

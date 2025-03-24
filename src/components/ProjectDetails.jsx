@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
+import ImageModal from './ImageModal';
 
 // Import all images dynamically
 const imageModules = import.meta.glob('../assets/**/*.{png,jpg,jpeg,gif}', { eager: true });
@@ -83,6 +84,7 @@ const ProjectDetails = () => {
   const { id } = useParams();
   const [project, setProject] = useState(null);
   const [galleryImages, setGalleryImages] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     // Find project data
@@ -113,44 +115,36 @@ const ProjectDetails = () => {
 
   return (
     <ProjectDetailsContainer
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 20 }}
     >
       <Container>
-        <BackButton
-          onClick={() => {
-            navigate('/');
-            setTimeout(() => {
-              const projectsSection = document.getElementById('projects');
-              if (projectsSection) {
-                projectsSection.scrollIntoView({ behavior: 'smooth' });
-              }
-            }, 100);
-          }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          ← Back to Projects
+        <BackButton onClick={() => navigate('/')}>
+          <i className="fas fa-arrow-left"></i> Back
         </BackButton>
-
-        <ProjectTitle>{project.title}</ProjectTitle>
-        <ProjectDescription>{project.description}</ProjectDescription>
-
-        <Gallery>
-          {galleryImages.map((image, index) => (
-            <GalleryItem
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -5 }}
-            >
-              <GalleryImage src={image.url} alt={`${project.title} ${index + 1}`} loading="lazy" />
-            </GalleryItem>
-          ))}
-        </Gallery>
+        {project && (
+          <>
+            <ProjectTitle>{project.title}</ProjectTitle>
+            <ProjectDescription>{project.description}</ProjectDescription>
+            <Gallery>
+              {galleryImages.map((image, index) => (
+                <GalleryItem
+                  key={index}
+                  whileHover={{ y: -5 }}
+                  onClick={() => setSelectedImage(image.url)}
+                >
+                  <GalleryImage src={image.url} alt={`Project image ${index + 1}`} />
+                </GalleryItem>
+              ))}
+            </Gallery>
+            <ImageModal
+              isOpen={!!selectedImage}
+              imageUrl={selectedImage}
+              onClose={() => setSelectedImage(null)}
+            />
+          </>
+        )}
       </Container>
     </ProjectDetailsContainer>
   );

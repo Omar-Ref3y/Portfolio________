@@ -1,4 +1,4 @@
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useScroll, useMotionValueEvent } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { MdPhotoCamera, MdEdit } from 'react-icons/md';
@@ -151,60 +151,30 @@ const skills = [
   }
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.4,
-      duration: 2,
-      ease: [0.4, 0, 0.2, 1]
-    }
-  }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, x: -50 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 1.8,
-      ease: [0.4, 0, 0.2, 1]
-    }
-  }
-};
-
-const imageVariants = {
-  hidden: { opacity: 0, x: 50 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 1.6,
-      ease: [0.4, 0, 0.2, 1],
-      delay: 0.3
-    }
-  }
-};
-
-const skillCardVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 1.4,
-      ease: [0.4, 0, 0.2, 1]
-    }
-  }
-};
-
 const About = () => {
   const ref = useRef(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const isInView = useInView(ref, { once: true, margin: "-20%" });
+  const [scrollDirection, setScrollDirection] = useState('down');
+  const { scrollY } = useScroll();
+  const isInView = useInView(ref, { 
+    margin: "-20%",
+    amount: 0.3 // Trigger when 30% of the section is visible
+  });
   const [displayText, setDisplayText] = useState('About Me');
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [hasBeenVisible, setHasBeenVisible] = useState(false);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const direction = latest > lastScrollY ? "down" : "up";
+    setScrollDirection(direction);
+    setLastScrollY(latest);
+  });
+
+  useEffect(() => {
+    if (isInView) {
+      setHasBeenVisible(true);
+    }
+  }, [isInView]);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -231,11 +201,17 @@ const About = () => {
         } else {
           clearInterval(timer);
         }
-      }, 200); // Slower typing speed
+      }, 200);
       
       return () => clearInterval(timer);
     }
   }, [isInView]);
+
+  const getAnimationState = () => {
+    if (!hasBeenVisible && !isInView) return "hidden";
+    if (!isInView) return scrollDirection === "up" ? "visible" : "hidden";
+    return "visible";
+  };
 
   return (
     <AboutSection id="about" ref={ref}>
@@ -243,27 +219,51 @@ const About = () => {
         <AboutContent
           as={motion.div}
           initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          variants={containerVariants}
+          animate={getAnimationState()}
+          variants={{
+            hidden: { 
+              opacity: 0
+            },
+            visible: {
+              opacity: 1,
+              transition: {
+                duration: 1.5,
+                ease: [0.4, 0, 0.2, 1]
+              }
+            }
+          }}
         >
           <AboutText>
-            <motion.h2 variants={itemVariants}>
+            <motion.h2 
+              initial={{ opacity: 0, y: 50 }} 
+              animate={getAnimationState() === "visible" ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }} 
+              transition={{ duration: 1.5, ease: [0.4, 0, 0.2, 1] }}
+            >
               About Me
             </motion.h2>
-            <motion.div variants={itemVariants}>
+            <motion.div 
+              initial={{ opacity: 0, x: -100 }} 
+              animate={getAnimationState() === "visible" ? { opacity: 1, x: 0 } : { opacity: 0, x: -100 }} 
+              transition={{ duration: 1.8, ease: [0.4, 0, 0.2, 1], delay: 0.5 }}
+            >
               <LeadText>
                 I'm Ali, a Photoshop Expert and Retouching Specialist with over 10 years of experience in image editing and AI-generated visuals. I have worked with clients worldwide, delivering high-quality results with precision and efficiency
               </LeadText>
             </motion.div>
             
-            <motion.div variants={itemVariants}>
+            <motion.div 
+              initial={{ opacity: 0, x: -100 }} 
+              animate={getAnimationState() === "visible" ? { opacity: 1, x: 0 } : { opacity: 0, x: -100 }} 
+              transition={{ duration: 1.8, ease: [0.4, 0, 0.2, 1], delay: 0.8 }}
+            >
               <SkillsGrid>
                 {skills.map((skill, index) => (
                   <SkillCard
                     key={index}
                     as={motion.div}
-                    variants={skillCardVariants}
-                    custom={index}
+                    initial={{ opacity: 0, x: -50 }}
+                    animate={getAnimationState() === "visible" ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+                    transition={{ duration: 1.5, ease: [0.4, 0, 0.2, 1], delay: 1.2 + (index * 0.2) }}
                     whileHover={{ 
                       scale: 1.02,
                       transition: { duration: 0.5 }
@@ -288,11 +288,18 @@ const About = () => {
             </motion.div>
           </AboutText>
           
-          <motion.div variants={imageVariants}>
+          <motion.div 
+            initial={{ opacity: 0, x: 100 }} 
+            animate={getAnimationState() === "visible" ? { opacity: 1, x: 0 } : { opacity: 0, x: 100 }} 
+            transition={{ duration: 1.8, ease: [0.4, 0, 0.2, 1], delay: 0.5 }}
+          >
             <ImageContainer>
               <motion.img 
                 src="/profile.jpg" 
                 alt="Ali's Profile"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={getAnimationState() === "visible" ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
+                transition={{ duration: 1.5, ease: [0.4, 0, 0.2, 1], delay: 0.8 }}
                 whileHover={{ 
                   scale: 1.05,
                   transition: { duration: 0.5 }

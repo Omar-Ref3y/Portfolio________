@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import styled from '@emotion/styled';
-import { FaEnvelope, FaGithub, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
+import { FaEnvelope, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
+import { SiUpwork } from 'react-icons/si';
 
 const ContactSection = styled.section`
   padding: 8rem 2rem;
@@ -338,10 +339,10 @@ const Contact = () => {
       href: "https://wa.me/+201000870099"
     },
     {
-      icon: <FaGithub />,
-      title: "GitHub",
-      description: "Explore my open-source projects",
-      href: "https://github.com/Omar-Ref3y"
+      icon: <SiUpwork />,
+      title: "Upwork",
+      description: "View my freelance portfolio and reviews",
+      href: "https://www.upwork.com/freelancers/alim486?mp_source=share"
     },
     {
       icon: <FaLinkedin />,

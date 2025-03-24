@@ -89,7 +89,7 @@ const projects = [
   },
   {
     id: 'remove',
-    title: 'Background Removal',
+    title: 'Remove and add person',
     description: 'Professional background removal and replacement',
     image: removePreview,
     folder: 'remove',

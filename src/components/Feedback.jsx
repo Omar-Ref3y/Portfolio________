@@ -33,31 +33,70 @@ const FeedbackContainer = styled.div`
 `;
 
 const FeedbackCard = styled(motion.div)`
-  background: var(--bg-secondary);
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
   padding: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
+  gap: 1rem;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      45deg,
+      rgba(var(--primary-rgb), 0.05),
+      rgba(var(--accent-rgb), 0.05)
+    );
+    z-index: -1;
+  }
+`;
+
+const ProjectName = styled.h4`
+  color: var(--primary-color);
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  opacity: 0.95;
+  background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.5px;
 `;
 
 const FeedbackText = styled(motion.p)`
   color: var(--text-secondary);
   font-size: 1rem;
   line-height: 1.6;
-  flex: 1;
+  margin: 0;
+`;
+
+const ReadMoreButton = styled.button`
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0;
+  margin-top: 0.5rem;
+  text-decoration: underline;
+  
+  &:hover {
+    color: var(--accent-color);
+  }
 `;
 
 const ClientInfo = styled(motion.div)`
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 1rem;
+  margin-top: auto;
 `;
 
 const ClientName = styled.h4`
@@ -66,11 +105,11 @@ const ClientName = styled.h4`
   margin: 0;
 `;
 
-const ProjectName = styled.p`
+const ProjectNameComponent = styled.p`
   color: var(--accent-color);
-  font-size: 0.9rem;
+  font-size: 1.5rem;
+  font-weight: 600;
   margin: 0;
-  font-weight: 500;
 `;
 
 const Rating = styled(motion.div)`
@@ -132,18 +171,17 @@ const Dot = styled(motion.button)`
 const feedbacks = [
   {
     id: 1,
-    text: "Omar's work is exceptional! He transformed our product photos with his expert retouching skills, making them stand out in our e-commerce store. His attention to detail and quick turnaround time exceeded our expectations.",
+    text: "Skills great. Responsiveness great. Communication great. Availability great. Cooperation great. I felt like I could trust his work",
     client: {
-      name: "Sarah Johnson",
-      project: "Product Photo Enhancement"
+
+      project: "Photo resizing with dedicated Ai tool"
     },
     rating: 5
-  },
-  {
+  },{
     id: 2,
     text: "Ali did a great job. I would definitely hire him again in the future.",
     client: {
-      name: "Michael Chen",
+
       project: "Photo Editing and Image Modification using Photoshop"
     },
     rating: 5
@@ -152,7 +190,7 @@ const feedbacks = [
     id: 3,
     text: "I had terrible pics to start with but given the circumstances, he did a great job making them look great!",
     client: {
-      name: "Emma Davis",
+
       project: "My Pics Need Photoshop!"
     },
     rating: 5
@@ -161,7 +199,7 @@ const feedbacks = [
     id: 4,
     text: "Efficient, friendly and understood the requirements of the work in entirety. Great work!",
     client: {
-      name: "Sophie Martinez",
+
       project: "Change colour of Aircraft Tail & Engines in PNG Image"
     },
     rating: 5
@@ -170,7 +208,6 @@ const feedbacks = [
     id: 5,
     text: "I have trusted Ali with several lightroom and photoshop projects. He has been able to help me with many photos in return completing several projects and helping me finalize creative photo enhancements. He has been prompt and very good with detail on all fronts. He is a great person to work with and does his very best and takes great care to the details. I am appreciative to have found him and to work with him. Thank you.",
     client: {
-      name: "James Thompson",
       project: "Photo Editing for Home Windows"
     },
     rating: 5
@@ -179,10 +216,46 @@ const feedbacks = [
     id: 6,
     text: "Ali did great work very quickly for us",
     client: {
-      name: "David Wilson",
+
       project: "Urgent Photo Touch-Up Services Needed"
     },
     rating: 5
+  }
+  ,
+  {
+    id: 7,
+    text: "I recently worked with Ali on a photo retouching project, and I couldn't be more satisfied with the results. Ali demonstrated excellent skills in photo editing and paid close attention to every detail. He was responsive and completed the project on time, delivering exactly what I envisioned. If you're looking for a reliable and talented photo retouching expert, I highly recommend Ali!",
+    client: {
+
+      project: "Photo Retouching Expert Needed"
+    },
+    rating: 5
+  },
+  {
+    id: 8,
+    text: "Super attentive to detail, kind, honest, hard worker, will contact this freelancer for multi-RAW photography edit and merge jobs in the future!!!!!",
+    client: {
+
+      project: "Image Editing & Enhancement Using Photoshop"
+    },
+    rating: 5
+  },
+  {
+    id: 9,
+    text: "Thank you so much for your diligence and hard work on this project. The colors on the photo correction were above my expectations. You did such a great job on the landscape in addition to the people and the items that were in need of repair from scratches and color loss. I appreciate your skills and hope that you have success in your future endeavors! Thank you again.",
+    client: {
+
+      project: "Retouching 3 photographs with specific instructions."
+    },
+    rating: 5
+  },
+  {
+    id: 10,
+    text: "Ali is amazing to work with. He quickly helped me when I was in a job with an image. He was able to proportion it perfectly with another image to fit beautifully as the hero image on our Home page.Thanks Ali! Will reach out again.:)",
+    client: {
+      project: "Image Edit"
+    },
+    rating: 5,
   }
 ];
 
@@ -214,8 +287,18 @@ const swipePower = (offset, velocity) => {
 const Feedback = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [isExpanded, setIsExpanded] = useState(false);
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true });
+
+  const TEXT_LIMIT = 150;
+
+  const getDisplayText = (text) => {
+    if (text.length <= TEXT_LIMIT || isExpanded) {
+      return text;
+    }
+    return `${text.slice(0, TEXT_LIMIT)}...`;
+  };
 
   const paginate = (newDirection) => {
     setDirection(newDirection);
@@ -282,7 +365,12 @@ const Feedback = () => {
                   paginate(-1);
                 }
               }}
+              whileHover={{ 
+                scale: 1.02,
+                transition: { duration: 0.3 }
+              }}
             >
+              <ProjectNameComponent>{feedbacks[currentIndex].client.project}</ProjectNameComponent>
               <Rating
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -305,7 +393,17 @@ const Feedback = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.4 }}
               >
-                {feedbacks[currentIndex].text}
+                {getDisplayText(feedbacks[currentIndex].text)}
+                {feedbacks[currentIndex].text.length > TEXT_LIMIT && (
+                  <ReadMoreButton 
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    as={motion.button}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {isExpanded ? 'Read Less' : 'Read More'}
+                  </ReadMoreButton>
+                )}
               </FeedbackText>
               <ClientInfo
                 as={motion.div}
@@ -314,7 +412,6 @@ const Feedback = () => {
                 transition={{ delay: 0.4, duration: 0.4 }}
               >
                 <ClientName>{feedbacks[currentIndex].client.name}</ClientName>
-                <ProjectName>{feedbacks[currentIndex].client.project}</ProjectName>
               </ClientInfo>
             </FeedbackCard>
           </AnimatePresence>

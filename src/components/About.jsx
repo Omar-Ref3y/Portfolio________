@@ -1,6 +1,6 @@
+import { motion, useInView } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { motion, useInView } from 'framer-motion';
 import { MdPhotoCamera, MdEdit } from 'react-icons/md';
 import { FaCamera, FaPaintBrush, FaPhotoVideo, FaCrop } from 'react-icons/fa';
 import { SiAdobephotoshop, SiAdobelightroom } from 'react-icons/si';
@@ -9,99 +9,116 @@ import 'aos/dist/aos.css';
 const AboutSection = styled.section`
   padding: 6rem 2rem;
   background: var(--bg-secondary);
+  position: relative;
+  overflow: hidden;
   min-height: 100vh;
-  display: flex;
-  align-items: center;
 `;
 
 const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  width: 100%;
 `;
 
 const AboutContent = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  display: flex;
   align-items: center;
-
-  @media (max-width: 1024px) {
-    grid-template-columns: 1fr;
-    gap: 3rem;
+  gap: 4rem;
+  
+  @media (max-width: 968px) {
+    flex-direction: column;
     text-align: center;
   }
 `;
 
-const AboutText = styled(motion.div)`
-  opacity: 1;
-`;
-
-const SectionTitle = styled(motion.h2)`
-  font-size: 2.5rem;
-  margin-bottom: 1.5rem;
-  background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  white-space: nowrap;
-  text-align: left;
-
-  @media (max-width: 1024px) {
-    text-align: center;
+const AboutText = styled.div`
+  flex: 1;
+  h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 `;
 
 const LeadText = styled(motion.p)`
   font-size: 1.2rem;
-  color: var(--text-primary);
-  margin-bottom: 2rem;
   line-height: 1.8;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+`;
+
+const ImageContainer = styled(motion.div)`
+  flex: 0.8;
+  position: relative;
+  max-width: 400px;
+  width: 100%;
+  
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    object-fit: cover;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    background: linear-gradient(
+      45deg,
+      rgba(var(--primary-rgb), 0.2),
+      rgba(var(--accent-rgb), 0.2)
+    );
+  }
+
+  @media (max-width: 968px) {
+    max-width: 300px;
+    margin: 0 auto;
+  }
 `;
 
 const SkillsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 2rem;
-  margin-top: 3rem;
-  padding: 0 1rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
 
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
   }
 `;
 
 const SkillCard = styled(motion.div)`
   background: rgba(255, 255, 255, 0.05);
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 12px;
   text-align: center;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
-  height: 100%;
+  backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 1rem;
 
-  &:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.08);
-    border-color: var(--primary-color);
-  }
-
   svg {
-    font-size: 3rem;
-    color: #3b82f6;
+    font-size: 2.5rem;
+    color: var(--primary-color);
     margin-bottom: 0.5rem;
   }
 `;
 
+const SkillInfo = styled.div`
+  text-align: center;
+  width: 100%;
+`;
+
 const SkillTitle = styled.h3`
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem 0;
   color: var(--text-primary);
-  margin: 0.5rem 0;
 `;
 
 const SkillDescription = styled.p`
@@ -109,30 +126,6 @@ const SkillDescription = styled.p`
   color: var(--text-secondary);
   line-height: 1.4;
   margin: 0;
-`;
-
-const ImageContainer = styled.div`
-  position: relative;
-  
-  @media (max-width: 1024px) {
-    order: -1;
-  }
-`;
-
-const AboutImage = styled(motion.img)`
-  width: 100%;
-  max-width: 500px;
-  height: auto;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  margin: 0 auto;
-  display: block;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  &:hover {
-    transform: scale(1.02);
-    box-shadow: 0 8px 16px rgba(var(--primary-color-rgb), 0.3);
-  }
 `;
 
 const skills = [
@@ -158,52 +151,91 @@ const skills = [
   }
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.4,
+      duration: 2,
+      ease: [0.4, 0, 0.2, 1]
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, x: -50 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 1.8,
+      ease: [0.4, 0, 0.2, 1]
+    }
+  }
+};
+
+const imageVariants = {
+  hidden: { opacity: 0, x: 50 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 1.6,
+      ease: [0.4, 0, 0.2, 1],
+      delay: 0.3
+    }
+  }
+};
+
+const skillCardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 1.4,
+      ease: [0.4, 0, 0.2, 1]
+    }
+  }
+};
+
 const About = () => {
   const ref = useRef(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const isInView = useInView(ref, { once: true, margin: "-20%" });
   const [displayText, setDisplayText] = useState('About Me');
-  
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const { clientX, clientY } = e;
+      const moveX = (clientX - window.innerWidth / 2) * 0.005;
+      const moveY = (clientY - window.innerHeight / 2) * 0.005;
+      setMousePosition({ x: moveX, y: moveY });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   useEffect(() => {
     if (isInView) {
-      const finalText = "AAbout Me";
+      const chars = "AAbout Me".split("");
       let i = 0;
-      setDisplayText('');  // Clear first
+      setDisplayText('');
       
       const timer = setInterval(() => {
-        if (i < finalText.length) {
-          setDisplayText(prev => prev + finalText.charAt(i));
+        if (i < chars.length) {
+          setDisplayText(prev => prev + chars[i]);
           i++;
         } else {
           clearInterval(timer);
         }
-      }, 100);
+      }, 200); // Slower typing speed
       
       return () => clearInterval(timer);
     }
   }, [isInView]);
-
-  const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5
-      }
-    }
-  };
 
   return (
     <AboutSection id="about" ref={ref}>
@@ -215,37 +247,59 @@ const About = () => {
           variants={containerVariants}
         >
           <AboutText>
-            <SectionTitle className="typewriter">
-              {displayText}
-            </SectionTitle>
-            <LeadText variants={itemVariants}>
-            I’m Ali, a Photoshop Expert and Retouching Specialist with over 10 years of experience in image editing and AI-generated visuals. I have worked with clients worldwide, delivering high-quality results with precision and efficiency
-            </LeadText>
-            <motion.div variants={containerVariants}>
+            <motion.h2 variants={itemVariants}>
+              About Me
+            </motion.h2>
+            <motion.div variants={itemVariants}>
+              <LeadText>
+                I'm Ali, a Photoshop Expert and Retouching Specialist with over 10 years of experience in image editing and AI-generated visuals. I have worked with clients worldwide, delivering high-quality results with precision and efficiency
+              </LeadText>
+            </motion.div>
+            
+            <motion.div variants={itemVariants}>
               <SkillsGrid>
                 {skills.map((skill, index) => (
                   <SkillCard
                     key={index}
-                    variants={itemVariants}
+                    as={motion.div}
+                    variants={skillCardVariants}
+                    custom={index}
+                    whileHover={{ 
+                      scale: 1.02,
+                      transition: { duration: 0.5 }
+                    }}
                   >
-                    {skill.icon}
-                    <SkillTitle>{skill.title}</SkillTitle>
-                    <SkillDescription>{skill.description}</SkillDescription>
+                    <motion.div
+                      whileHover={{ 
+                        scale: 1.1,
+                        rotate: 5,
+                        transition: { duration: 0.5 }
+                      }}
+                    >
+                      {skill.icon}
+                    </motion.div>
+                    <SkillInfo>
+                      <SkillTitle>{skill.title}</SkillTitle>
+                      <SkillDescription>{skill.description}</SkillDescription>
+                    </SkillInfo>
                   </SkillCard>
                 ))}
               </SkillsGrid>
             </motion.div>
           </AboutText>
-          <ImageContainer>
-            <AboutImage
-              as={motion.img}
-              src="/profile.jpg"
-              alt="Ali's Profile"
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            />
-          </ImageContainer>
+          
+          <motion.div variants={imageVariants}>
+            <ImageContainer>
+              <motion.img 
+                src="/profile.jpg" 
+                alt="Ali's Profile"
+                whileHover={{ 
+                  scale: 1.05,
+                  transition: { duration: 0.5 }
+                }}
+              />
+            </ImageContainer>
+          </motion.div>
         </AboutContent>
       </Container>
     </AboutSection>

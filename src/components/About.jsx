@@ -58,56 +58,66 @@ const LeadText = styled(motion.p)`
 const SkillsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
+  gap: 1.5rem;
   margin-top: 3rem;
-
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1.5rem;
-  }
 `;
 
 const SkillCard = styled(motion.div)`
-  background: rgba(var(--bg-secondary-rgb), 0.5);
+  background: rgba(22, 28, 36, 0.95);
   padding: 2rem;
-  border-radius: 16px;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: transform 0.3s ease, background-color 0.3s ease;
-
-  i {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    transition: transform 0.3s ease;
-  }
+  border: 1px solid rgba(145, 158, 171, 0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
 
   &:hover {
+    border-color: #2065D1;
     transform: translateY(-5px);
-    background: rgba(var(--bg-secondary-rgb), 0.7);
+  }
 
-    i {
-      transform: scale(1.1);
-    }
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(145, 158, 171, 0.1), transparent);
+  }
+`;
+
+const SkillIcon = styled.div`
+  font-size: 2rem;
+  color: #2065D1;
+  margin-bottom: 1rem;
+  
+  i {
+    background: linear-gradient(45deg, #2065D1, #4D9FFF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 `;
 
 const SkillTitle = styled.h3`
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #fff;
   margin: 0;
 `;
 
 const SkillDescription = styled.p`
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  line-height: 1.4;
+  color: rgb(145, 158, 171);
+  font-size: 0.875rem;
+  line-height: 1.5;
   margin: 0;
-  flex-grow: 1;
+  opacity: 0.8;
 `;
 
 const ImageContainer = styled.div`
@@ -138,22 +148,22 @@ const skills = [
   {
     name: 'Photoshop Expert',
     icon: 'fas fa-layer-group',
-    color: '#31A8FF'
+    description: 'Professional retouching and color grading'
   },
   {
     name: 'Lightroom Expert',
     icon: 'fas fa-adjust',
-    color: '#31A8FF'
+    description: 'Color correction and batch processing'
   },
   {
     name: 'AI Generated & Retouch',
     icon: 'fas fa-robot',
-    color: '#00FF9D'
+    description: 'Advanced AI-powered editing'
   },
   {
     name: 'Photo Retoucher',
     icon: 'fas fa-magic',
-    color: '#FF61F6'
+    description: 'Professional photo enhancement'
   }
 ];
 
@@ -226,9 +236,14 @@ const About = () => {
                   <SkillCard
                     key={index}
                     variants={itemVariants}
+                    whileHover={{ y: -5 }}
+                    transition={{ type: "spring", stiffness: 300 }}
                   >
-                    <i className={skill.icon} style={{ color: skill.color }}></i>
+                    <SkillIcon>
+                      <i className={skill.icon}></i>
+                    </SkillIcon>
                     <SkillTitle>{skill.name}</SkillTitle>
+                    <SkillDescription>{skill.description}</SkillDescription>
                   </SkillCard>
                 ))}
               </SkillsGrid>

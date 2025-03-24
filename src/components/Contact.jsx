@@ -348,7 +348,7 @@ const Contact = () => {
       icon: <FaLinkedin />,
       title: "LinkedIn",
       description: "Connect professionally and explore opportunities",
-      href: "https://www.linkedin.com/in/omar-refaey"
+      href: "https://www.linkedin.com/in/ali-saadawy-abb071303/"
     }
   ];
 

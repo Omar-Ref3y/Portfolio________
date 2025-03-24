@@ -198,7 +198,7 @@ const About = () => {
           animate={{
             opacity: isInView ? 1 : 0,
             transition: {
-              duration: 0.8,
+              duration: .8,
               ease: [0.4, 0, 0.2, 1]
             }
           }}

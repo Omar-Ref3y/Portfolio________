@@ -69,13 +69,14 @@ const FeedbackCard = styled(motion.div)`
 
 const ProjectNameComponent = styled.h3`
   color: var(--accent-color);
-  font-size: 2rem;
+  font-size: 1.8rem;
   margin-bottom: 0rem;
   font-weight: 600;
   background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  line-height: 1.4;
 `;
 
 const Rating = styled(motion.div)`
@@ -168,7 +169,7 @@ const NavigationButtons = styled.div`
   display: flex;
   justify-content: center;
   gap: 1.5rem;
-  margin-top: 0rem;
+  margin-top: 1rem;
 `;
 
 const NavButton = styled.button`
@@ -176,13 +177,13 @@ const NavButton = styled.button`
   border: 2px solid var(--primary-color);
   color: var(--primary-color);
   width: 50px;
-  height: 60px;
+  height: 50px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   transition: all 0.3s ease;
 
   &:hover {
@@ -294,7 +295,7 @@ const feedbacks = [
 
 const slideVariants = {
   enter: (direction) => ({
-    x: direction > 0 ? 1000 : -1000,
+    x: direction > 0 ? 2000 : -2000,
     opacity: 0,
     scale: 0.8
   }),
@@ -305,7 +306,7 @@ const slideVariants = {
     zIndex: 1
   },
   exit: (direction) => ({
-    x: direction < 0 ? 1000 : -1000,
+    x: direction < 0 ? 2000 : -2000,
     opacity: 0,
     scale: 0.8
   })

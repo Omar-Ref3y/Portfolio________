@@ -57,7 +57,7 @@ const LeadText = styled(motion.p)`
 
 const SkillsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 2rem;
   margin-top: 3rem;
 
@@ -68,37 +68,38 @@ const SkillsGrid = styled.div`
 `;
 
 const SkillCard = styled(motion.div)`
-  background: rgba(255, 255, 255, 0.05);
-  padding: 1.5rem;
-  border-radius: 12px;
-  text-align: center;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
-  height: 100%;
+  background: rgba(var(--bg-secondary-rgb), 0.5);
+  padding: 2rem;
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  gap: 0.5rem;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+
+  i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+  }
 
   &:hover {
     transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.08);
-    border-color: var(--primary-color);
-  }
+    background: rgba(var(--bg-secondary-rgb), 0.7);
 
-  i {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    i {
+      transform: scale(1.1);
+    }
   }
 `;
 
 const SkillTitle = styled.h3`
-  font-size: 1.1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 0.5rem;
+  margin: 0;
 `;
 
 const SkillDescription = styled.p`
@@ -135,35 +136,25 @@ const AboutImage = styled(motion.img)`
 
 const skills = [
   {
-    icon: 'fa-image',
-    title: 'Photo Editing',
-    description: 'Professional retouching and color grading'
+    name: 'Photoshop Expert',
+    icon: 'fas fa-layer-group',
+    color: '#31A8FF'
   },
   {
-    icon: 'fa-object-group',
-    title: 'Photoshop',
-    description: 'Advanced manipulation and compositing'
+    name: 'Lightroom Expert',
+    icon: 'fas fa-adjust',
+    color: '#31A8FF'
   },
   {
-    icon: 'fa-paint-brush',
-    title: 'Lightroom',
-    description: 'Color correction and batch processing'
+    name: 'AI Generated & Retouch',
+    icon: 'fas fa-robot',
+    color: '#00FF9D'
   },
   {
-    icon: 'fa-camera',
-    title: 'Photography',
-    description: 'Composition and lighting techniques'
-  },
-  {
-    icon: 'fa-crop',
-    title: 'Graphic Design',
-    description: 'Layout and visual communication'
-  },
-  {
-    icon: 'fa-video',
-    title: 'Video Editing',
-    description: 'Motion graphics and color grading'
-  },
+    name: 'Photo Retoucher',
+    icon: 'fas fa-magic',
+    color: '#FF61F6'
+  }
 ];
 
 const About = () => {
@@ -236,9 +227,8 @@ const About = () => {
                     key={index}
                     variants={itemVariants}
                   >
-                    <i className={`fas ${skill.icon}`}></i>
-                    <SkillTitle>{skill.title}</SkillTitle>
-                    <SkillDescription>{skill.description}</SkillDescription>
+                    <i className={skill.icon} style={{ color: skill.color }}></i>
+                    <SkillTitle>{skill.name}</SkillTitle>
                   </SkillCard>
                 ))}
               </SkillsGrid>

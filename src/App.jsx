@@ -12,6 +12,7 @@ import 'aos/dist/aos.css';
 import Feedback from './components/Feedback';
 import Projects from './components/Projects';
 import ProjectDetails from './components/ProjectDetails';
+import NotFound from './components/NotFound';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -111,10 +112,10 @@ function App() {
         <Navbar />
         <MainContent>
           <Routes>
-            <Route path="/" element={<Navigate to="/home" />} />
-            <Route path="/home" element={<HomePage />} />
+            <Route path="/" element={<NotFound />} />
+            <Route path="/home" element={<NotFound />} />
             <Route path="/project/:id" element={<ProjectDetails />} />
-            <Route path="*" element={<Navigate to="/home" />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </MainContent>
         <StyledFooter>
